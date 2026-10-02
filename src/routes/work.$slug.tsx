@@ -7,8 +7,10 @@ import { projects } from "@/lib/portfolio-data";
 export const Route = createFileRoute("/work/$slug")({
   loader: ({ params }) => {
     const index = projects.findIndex((p) => p.slug === params.slug);
-    if (index === -1) throw notFound();
-    return { project: projects[index], next: projects[(index + 1) % projects.length] };
+    const project = projects[index];
+    const next = projects[(index + 1) % projects.length];
+    if (!project || !next) throw notFound();
+    return { project, next };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
