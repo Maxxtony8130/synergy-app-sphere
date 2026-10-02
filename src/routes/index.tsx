@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, type MouseEvent } from "react";
 import { ArrowRight, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
-import photo from "@/assets/vishal-pandey.png.asset.json";
+import photo from "@/assets/vishal-pandey-enhanced.png";
 import { Nav } from "@/components/portfolio/Nav";
 import { Reveal, CountUp, SectionHeading } from "@/components/portfolio/shared";
 import {
@@ -12,6 +12,7 @@ import {
   techGroups,
   services,
 } from "@/lib/portfolio-data";
+import { projectAssets } from "@/lib/project-assets";
 
 const TITLE = "Vishal Pandey — Senior React Native Developer";
 const DESC =
@@ -153,7 +154,7 @@ function Hero() {
           <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-primary/25 via-transparent to-transparent blur-2xl" />
           <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-2xl">
             <img
-              src={photo.url}
+              src={photo}
               alt="Vishal Pandey, Senior React Native Developer"
               width={480}
               height={480}
@@ -231,34 +232,45 @@ function Work() {
     <section id="work" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-28 md:py-40">
       <SectionHeading kicker="Selected work" title="Nine products, live in the stores." />
       <div className="grid gap-5 md:grid-cols-2">
-        {projects.map((p, i) => (
+        {projects.map((p, i) => {
+          const visual = projectAssets[p.slug];
+          return (
           <Reveal key={p.slug} delay={((i % 2) + 1) as 1 | 2} className={i === 0 ? "md:col-span-2" : ""}>
             <Link
               to="/work/$slug"
               params={{ slug: p.slug }}
-              className="group relative block overflow-hidden rounded-3xl border border-border bg-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 md:p-10"
+              className={`group relative block min-h-[30rem] overflow-hidden rounded-3xl border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 ${i === 0 ? "md:min-h-[36rem]" : ""}`}
             >
+              {visual && (
+                <div className="absolute inset-x-0 bottom-0 h-[58%] overflow-hidden bg-secondary">
+                  <img
+                    src={visual.screens[0]}
+                    alt={`${p.name} app screen`}
+                    loading="lazy"
+                    className={`h-full w-full transition duration-700 group-hover:scale-[1.03] ${visual.landscape ? "object-cover" : "object-cover object-top"}`}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-card via-card/25 to-background/20" />
+                </div>
+              )}
               <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-primary/0 blur-3xl transition-colors duration-700 group-hover:bg-primary/15" />
-              <div className="relative flex items-start justify-between gap-6">
+              <div className="relative z-10 flex items-start justify-between gap-6 p-8 md:p-10">
                 <div>
-                  <p className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
-                    {String(i + 1).padStart(2, "0")} — {p.domain}
-                  </p>
-                  <h3 className={`mt-4 font-display font-light tracking-tight text-foreground ${i === 0 ? "text-5xl md:text-7xl" : "text-4xl md:text-5xl"}`}>
-                    {p.name}
-                  </h3>
-                  <p className="mt-3 text-muted-foreground">{p.tagline}</p>
+                  <div className="flex items-center gap-4">
+                    {visual && <img src={visual.icon} alt="" className="h-14 w-14 rounded-2xl border border-border object-cover shadow-xl" />}
+                    <p className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
+                      {String(i + 1).padStart(2, "0")} — {p.domain}
+                    </p>
+                  </div>
+                  <h3 className={`mt-5 font-display font-light tracking-tight text-foreground ${i === 0 ? "text-5xl md:text-7xl" : "text-4xl md:text-5xl"}`}>{p.name}</h3>
+                  <p className="mt-2 text-muted-foreground">{p.tagline}</p>
                 </div>
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border text-foreground transition-all duration-500 group-hover:rotate-45 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
                   <ArrowUpRight size={18} />
                 </span>
               </div>
-              {p.outcome && (
-                <p className="relative mt-8 max-w-xl border-l-2 border-primary/60 pl-4 text-sm text-foreground/85">
-                  {p.outcome}
-                </p>
-              )}
-              <div className="relative mt-8 flex flex-wrap gap-2">
+              <div className="absolute inset-x-0 bottom-0 z-10 p-8 md:p-10">
+              {p.outcome && <p className="max-w-xl border-l-2 border-primary/60 pl-4 text-sm text-foreground">{p.outcome}</p>}
+              <div className="mt-5 flex flex-wrap gap-2">
                 {p.platforms.map((pl) => (
                   <span key={pl} className="rounded-full bg-primary/10 px-3 py-1 text-xs text-primary">
                     {pl}
@@ -270,9 +282,10 @@ function Work() {
                   </span>
                 ))}
               </div>
+              </div>
             </Link>
           </Reveal>
-        ))}
+        )})}
       </div>
     </section>
   );

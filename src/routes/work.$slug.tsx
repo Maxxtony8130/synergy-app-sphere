@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Nav } from "@/components/portfolio/Nav";
 import { Reveal } from "@/components/portfolio/shared";
 import { projects } from "@/lib/portfolio-data";
+import { projectAssets } from "@/lib/project-assets";
 
 export const Route = createFileRoute("/work/$slug")({
   loader: ({ params }) => {
@@ -70,23 +71,28 @@ function List({ items }: { items: string[] }) {
 
 function ProjectPage() {
   const { project: p, next } = Route.useLoaderData();
+  const visual = projectAssets[p.slug];
 
   return (
     <div className="grain min-h-screen">
       <Nav />
-      <main className="mx-auto max-w-5xl px-6 pt-32 pb-24">
+      <main className="mx-auto max-w-6xl px-6 pt-32 pb-24">
         <Reveal>
           <Link to="/" hash="work" className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground">
             <ArrowLeft size={16} /> All work
           </Link>
         </Reveal>
 
-        <header className="relative py-16 md:py-24">
+        <header className="relative grid items-center gap-16 py-16 lg:grid-cols-[1.15fr_0.85fr] md:py-24">
           <div className="hero-glow pointer-events-none absolute -top-20 -left-20 h-80 w-[600px] rounded-full bg-primary/10 blur-[100px]" />
+          <div>
           <Reveal delay={1}>
+            <div className="mb-7 flex items-center gap-4">
+              {visual && <img src={visual.icon} alt={`${p.name} app icon`} className="h-16 w-16 rounded-2xl border border-border object-cover shadow-2xl" />}
             <p className="relative text-xs tracking-[0.2em] text-muted-foreground uppercase">
               {p.domain} · {p.platforms.join(" · ")}
             </p>
+            </div>
           </Reveal>
           <Reveal delay={2}>
             <h1 className="relative mt-6 font-display text-6xl leading-[0.95] font-light tracking-tight text-foreground md:text-9xl">
@@ -110,6 +116,18 @@ function ProjectPage() {
               ))}
             </div>
           </Reveal>
+          </div>
+          {visual && (
+            <Reveal delay={2} className="relative min-h-[34rem]">
+              <div className="absolute inset-8 rounded-full bg-primary/10 blur-[90px]" />
+              <div className={`absolute right-0 top-0 overflow-hidden border border-border bg-secondary shadow-2xl ${visual.landscape ? "h-64 w-full rounded-2xl lg:top-20" : "h-[31rem] w-[15.5rem] rounded-[2.4rem] p-2"}`}>
+                <img src={visual.screens[0]} alt={`${p.name} app interface`} className={`h-full w-full ${visual.landscape ? "object-cover" : "rounded-[1.9rem] object-cover object-top"}`} />
+              </div>
+              <div className={`absolute bottom-0 left-0 overflow-hidden border border-border bg-secondary shadow-2xl transition-transform duration-700 hover:-translate-y-2 ${visual.landscape ? "h-52 w-[82%] rounded-2xl" : "h-[25rem] w-[12.5rem] -rotate-6 rounded-[2rem] p-2"}`}>
+                <img src={visual.screens[1]} alt={`${p.name} app interface detail`} className={`h-full w-full ${visual.landscape ? "object-cover" : "rounded-[1.55rem] object-cover object-top"}`} />
+              </div>
+            </Reveal>
+          )}
         </header>
 
         <Block n="01" title="Overview">
