@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, type MouseEvent } from "react";
 import { ArrowRight, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
-import photo from "@/assets/vishal-pandey-enhanced.png";
 import { Nav } from "@/components/portfolio/Nav";
 import { Reveal, CountUp, SectionHeading } from "@/components/portfolio/shared";
 import {
@@ -154,7 +153,7 @@ function Hero() {
           <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-primary/25 via-transparent to-transparent blur-2xl" />
           <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-2xl">
             <img
-              src={photo}
+              src="/assets/profile/vishal-pandey.webp"
               alt="Vishal Pandey, Senior React Native Developer"
               width={480}
               height={480}

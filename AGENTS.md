@@ -9,4 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep project visuals centralized in `src/lib/project-assets.ts` so portfolio cards and case studies always share the same official store artwork.
+- Keep image URL mapping centralized in `src/lib/project-assets.ts`, with deployable media committed under `public/assets`, so every host serves identical artwork.
