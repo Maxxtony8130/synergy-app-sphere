@@ -249,7 +249,7 @@ function Work() {
                     loading="lazy"
                     className={`h-full w-full transition duration-700 group-hover:scale-[1.03] ${visual.landscape ? "object-cover" : "object-cover object-top"}`}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-card via-card/25 to-background/20" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-card via-card/15 to-card/90" />
                 </div>
               )}
               <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-primary/0 blur-3xl transition-colors duration-700 group-hover:bg-primary/15" />
@@ -269,15 +269,15 @@ function Work() {
                 </span>
               </div>
               <div className="absolute inset-x-0 bottom-0 z-10 p-8 md:p-10">
-              {p.outcome && <p className="max-w-xl border-l-2 border-primary/60 pl-4 text-sm text-foreground">{p.outcome}</p>}
+              {p.outcome && <p className="max-w-xl border-l-2 border-primary/60 bg-background/55 py-2 pr-3 pl-4 text-sm text-foreground backdrop-blur-md">{p.outcome}</p>}
               <div className="mt-5 flex flex-wrap gap-2">
                 {p.platforms.map((pl) => (
-                  <span key={pl} className="rounded-full bg-primary/10 px-3 py-1 text-xs text-primary">
+                  <span key={pl} className="rounded-full bg-background/75 px-3 py-1 text-xs text-primary backdrop-blur-md">
                     {pl}
                   </span>
                 ))}
                 {p.stack.slice(0, 3).map((t) => (
-                  <span key={t} className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+                  <span key={t} className="rounded-full border border-border bg-background/75 px-3 py-1 text-xs text-foreground/80 backdrop-blur-md">
                     {t}
                   </span>
                 ))}
