@@ -18,7 +18,7 @@ export function Reveal({
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setVisible(true);
           observer.disconnect();
         }
@@ -63,7 +63,7 @@ export function CountUp({
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting || started.current) return;
+        if (!entry?.isIntersecting || started.current) return;
         started.current = true;
         if (reduced) {
           setDisplay(value);
