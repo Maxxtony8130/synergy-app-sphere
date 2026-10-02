@@ -55,6 +55,11 @@
   --border: oklch(1 0 0 / 9%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.82 0.11 85);
+  --project-shadow: 0 40px 90px -35px oklch(0 0 0 / 85%);
+}
+
+@utility project-shadow {
+  box-shadow: var(--project-shadow);
 }
 
 @layer base {

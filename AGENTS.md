@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep project visuals centralized in `src/lib/project-assets.ts` so portfolio cards and case studies always share the same official store artwork.
