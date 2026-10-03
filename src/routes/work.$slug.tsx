@@ -127,6 +127,29 @@ function ProjectPage() {
           )}
         </header>
 
+        {visual && visual.screens.length > 2 && (
+          <section className="py-20 md:py-32">
+            <Reveal variant="title">
+              <div className="mb-14 flex items-end justify-between gap-6 border-b border-border pb-8">
+                <div><p className="section-label"><span />Product gallery</p><h2 className="mt-5 font-display text-4xl text-foreground md:text-6xl">Inside the experience.</h2></div>
+                <p className="hidden text-[10px] uppercase text-muted-foreground md:block">Official store imagery · {String(visual.screens.length).padStart(2, "0")} frames</p>
+              </div>
+            </Reveal>
+            <div className="gallery-rail -mx-6 flex snap-x gap-5 overflow-x-auto px-6 pb-6 md:-mx-10 md:gap-8 md:px-10">
+              {visual.screens.map((screen, index) => (
+                <Reveal key={screen} variant="media" delay={((index % 4) + 1) as 1 | 2 | 3 | 4} className="w-[72vw] shrink-0 snap-center sm:w-[19rem]">
+                  <figure>
+                    <div className="project-shadow aspect-[9/19.5] overflow-hidden bg-card p-2">
+                      <img src={screen} alt={`${p.name} official store screenshot ${index + 1}`} loading={index < 2 ? "eager" : "lazy"} className="h-full w-full object-cover object-top" />
+                    </div>
+                    <figcaption className="mt-4 flex justify-between text-[10px] uppercase text-muted-foreground"><span>{String(index + 1).padStart(2, "0")}</span><span>{p.name}</span></figcaption>
+                  </figure>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        )}
+
         <Block n="01" title="Overview">
             <p className="font-display text-3xl leading-snug font-normal text-foreground md:text-5xl">{p.overview}</p>
         </Block>

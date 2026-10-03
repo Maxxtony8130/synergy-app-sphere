@@ -208,6 +208,11 @@
   .group:hover & { transform: translateY(-1rem) rotate(0deg); filter: grayscale(0) saturate(1); opacity: 1; }
 }
 
+@utility gallery-rail {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--card);
+}
+
 @utility reveal-delay-1 {
   transition-delay: 0.1s;
 }
