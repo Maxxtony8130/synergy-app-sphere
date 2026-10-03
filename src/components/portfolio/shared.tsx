@@ -103,11 +103,11 @@ export function SectionHeading({
 }) {
   return (
     <Reveal className={cn("mb-14 md:mb-20", className)}>
-      <p className="mb-4 flex items-center gap-3 text-xs font-medium tracking-[0.25em] text-primary uppercase">
+      <p className="mb-5 flex items-center gap-3 text-[10px] font-medium text-primary uppercase">
         <span className="inline-block h-px w-8 bg-primary/60" />
         {kicker}
       </p>
-      <h2 className="font-display text-4xl leading-[1.05] font-light tracking-tight text-foreground md:text-6xl">
+      <h2 className="max-w-4xl font-display text-5xl leading-[0.95] font-normal text-foreground md:text-7xl">
         {title}
       </h2>
     </Reveal>
