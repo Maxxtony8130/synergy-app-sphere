@@ -11,3 +11,6 @@
 
 - Keep image URL mapping centralized in `src/lib/project-assets.ts`, with deployable media committed under `public/assets`, so every host serves identical artwork.
 - Keep cinematic motion CSS-first with reduced-motion fallbacks, so the portfolio stays lightweight and accessible.
+
+- Use a gallery-monochrome visual system with Instrument Serif and Work Sans for the portfolio because the user selected that premium direction.
+- Present projects as an immersive gallery with authentic store media, CSS-first motion, and reduced-motion fallbacks.

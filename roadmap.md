@@ -1,6 +1,6 @@
-# Redesign roadmap
+# Premium portfolio rebuild
 
-- [x] Lock the carbon-copper palette, editorial typography, and cinematic chapter structure
-- [x] Rebuild the home experience around the selected Cinematic Noir direction
-- [x] Restyle project details to match the new visual system
-- [x] Verify desktop, mobile, motion, navigation, and all media
+- [ ] Benchmark award-winning portfolio patterns
+- [ ] Expand authentic App Store and Play Store media for all projects
+- [ ] Implement the selected gallery direction
+- [ ] Verify desktop, mobile, motion, links, and every image
