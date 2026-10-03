@@ -87,7 +87,7 @@ function ProjectPage() {
           <div className="relative z-10">
           <Reveal variant="label" delay={1}>
             <div className="mb-7 flex items-center gap-4">
-              {visual && <img src={visual.icon} alt={`${p.name} app icon`} className="h-14 w-14 border border-border object-cover shadow-2xl" />}
+               {visual && <img src={visual.icon} alt={`${p.name} app icon`} className="h-14 w-14 rounded-xl border border-border object-cover shadow-2xl" />}
             <p className="relative text-[10px] uppercase text-muted-foreground">
               {p.domain} · {p.platforms.join(" · ")}
             </p>
@@ -116,11 +116,11 @@ function ProjectPage() {
           </Reveal>
           </div>
           {visual && (
-            <Reveal variant="media" delay={2} className="project-stage relative min-h-[38rem] overflow-hidden bg-card/30">
-              <div className={`screen-drift absolute right-[7%] top-0 overflow-hidden bg-secondary shadow-2xl ${visual.landscape ? "top-24 h-72 w-full" : "h-[35rem] w-[17.5rem] p-2"}`}>
+             <Reveal variant="media" delay={2} className="project-stage relative min-h-[38rem] overflow-hidden bg-secondary">
+               <div className={`device-frame screen-drift absolute right-[7%] top-0 overflow-hidden bg-background shadow-2xl ${visual.landscape ? "top-24 h-72 w-full" : "h-[35rem] w-[17.5rem]"}`}>
                 <img src={visual.screens[0]} alt={`${p.name} app interface`} className={`h-full w-full ${visual.landscape ? "object-cover" : "object-cover object-top"}`} />
               </div>
-              <div className={`absolute bottom-0 left-[4%] overflow-hidden bg-secondary shadow-2xl transition-transform duration-700 hover:-translate-y-2 ${visual.landscape ? "h-56 w-[76%]" : "h-[27rem] w-[13.5rem] -rotate-6 p-2"}`}>
+               <div className={`device-frame absolute bottom-0 left-[4%] overflow-hidden bg-background shadow-2xl transition-transform duration-700 hover:-translate-y-2 ${visual.landscape ? "h-56 w-[76%]" : "h-[27rem] w-[13.5rem] -rotate-6"}`}>
                 <img src={visual.screens[1]} alt={`${p.name} app interface detail`} className={`h-full w-full ${visual.landscape ? "object-cover" : "object-cover object-top"}`} />
               </div>
             </Reveal>
@@ -139,7 +139,7 @@ function ProjectPage() {
               {visual.screens.map((screen, index) => (
                 <Reveal key={screen} variant="media" delay={((index % 4) + 1) as 1 | 2 | 3 | 4} className="w-[72vw] shrink-0 snap-center sm:w-[19rem]">
                   <figure>
-                    <div className="project-shadow aspect-[9/19.5] overflow-hidden bg-card p-2">
+                     <div className="device-frame project-shadow aspect-[9/19.5] overflow-hidden bg-card">
                       <img src={screen} alt={`${p.name} official store screenshot ${index + 1}`} loading={index < 2 ? "eager" : "lazy"} className="h-full w-full object-cover object-top" />
                     </div>
                     <figcaption className="mt-4 flex justify-between text-[10px] uppercase text-muted-foreground"><span>{String(index + 1).padStart(2, "0")}</span><span>{p.name}</span></figcaption>

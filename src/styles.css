@@ -36,6 +36,29 @@
 
 :root {
   --radius: 0.25rem;
+  --background: oklch(0.965 0.009 76);
+  --foreground: oklch(0.15 0.008 35);
+  --card: oklch(0.985 0.006 76);
+  --card-foreground: oklch(0.15 0.008 35);
+  --popover: oklch(0.985 0.006 76);
+  --popover-foreground: oklch(0.15 0.008 35);
+  --primary: oklch(0.61 0.14 38);
+  --primary-foreground: oklch(0.98 0.005 76);
+  --secondary: oklch(0.925 0.012 76);
+  --secondary-foreground: oklch(0.2 0.01 35);
+  --muted: oklch(0.925 0.012 76);
+  --muted-foreground: oklch(0.47 0.018 45);
+  --accent: oklch(0.63 0.12 42);
+  --accent-foreground: oklch(0.96 0.01 75);
+  --destructive: oklch(0.6 0.2 25);
+  --destructive-foreground: oklch(0.94 0.005 260);
+  --border: oklch(0.2 0.01 35 / 18%);
+  --input: oklch(0.2 0.01 35 / 20%);
+  --ring: oklch(0.63 0.12 42);
+  --project-shadow: 0 40px 90px -35px oklch(0 0 0 / 85%);
+}
+
+.dark {
   --background: oklch(0.135 0.003 35);
   --foreground: oklch(0.93 0.01 75);
   --card: oklch(0.175 0.008 40);
@@ -48,14 +71,8 @@
   --secondary-foreground: oklch(0.9 0.012 70);
   --muted: oklch(0.205 0.012 38);
   --muted-foreground: oklch(0.69 0.018 60);
-  --accent: oklch(0.63 0.12 42);
-  --accent-foreground: oklch(0.96 0.01 75);
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.94 0.005 260);
-  --border: oklch(0.94 0.012 75 / 13%);
-  --input: oklch(0.94 0.012 75 / 16%);
-  --ring: oklch(0.63 0.12 42);
-  --project-shadow: 0 40px 90px -35px oklch(0 0 0 / 85%);
+  --border: oklch(0.94 0.012 75 / 15%);
+  --input: oklch(0.94 0.012 75 / 18%);
 }
 
 @utility project-shadow {
@@ -78,6 +95,7 @@
     -webkit-font-smoothing: antialiased;
     letter-spacing: 0;
     overflow-x: clip;
+    transition: background-color 450ms ease, color 450ms ease;
   }
 
   ::selection {
@@ -92,6 +110,12 @@
   100% { transform: translateY(220%); }
 }
 
+@keyframes scroll-line-horizontal {
+  0% { transform: translateX(-110%); }
+  55% { transform: translateX(110%); }
+  100% { transform: translateX(220%); }
+}
+
 @keyframes portrait-breathe {
   0%, 100% { transform: scale(1.01); filter: grayscale(1) contrast(1.05); }
   50% { transform: scale(1.035); filter: grayscale(.82) contrast(1.08); }
@@ -104,6 +128,10 @@
 
 @utility scroll-line {
   animation: scroll-line 2.2s cubic-bezier(.65,0,.35,1) infinite;
+}
+
+@utility scroll-line-horizontal {
+  animation: scroll-line-horizontal 2.2s cubic-bezier(.65,0,.35,1) infinite;
 }
 
 @utility portrait-breathe {
@@ -202,6 +230,40 @@
   }
 }
 
+@utility theme-inverse {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+@utility portrait-frame {
+  box-shadow: 0 40px 100px -45px color-mix(in oklab, var(--foreground) 70%, transparent);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid color-mix(in oklab, var(--foreground) 18%, transparent);
+    pointer-events: none;
+  }
+}
+
+@utility device-frame {
+  border: 6px solid var(--foreground);
+  border-radius: 1.5rem;
+  box-shadow: 0 30px 75px -30px color-mix(in oklab, var(--foreground) 65%, transparent);
+}
+
+@utility experience-line {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 2.45rem;
+    width: 1px;
+    background: var(--border);
+  }
+}
+
 @utility project-screen {
   transition: transform 900ms cubic-bezier(.22,1,.36,1), filter 900ms ease, opacity 900ms ease;
   filter: grayscale(.35) saturate(.8);
@@ -283,6 +345,7 @@
   .marquee-track,
   .soft-pulse,
   .scroll-line,
+  .scroll-line-horizontal,
   .portrait-breathe,
   .screen-drift {
     animation: none;
