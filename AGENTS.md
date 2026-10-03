@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep image URL mapping centralized in `src/lib/project-assets.ts`, with deployable media committed under `public/assets`, so every host serves identical artwork.
+- Keep cinematic motion CSS-first with reduced-motion fallbacks, so the portfolio stays lightweight and accessible.

@@ -46,8 +46,8 @@ function ProjectNotFound() {
 function Block({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
   return (
     <Reveal>
-      <section className="grid gap-6 border-t border-border py-14 md:grid-cols-[240px_1fr] md:py-20">
-        <p className="text-xs tracking-[0.2em] text-primary uppercase">
+      <section className="grid gap-8 border-t border-border py-16 md:grid-cols-[260px_1fr] md:py-24">
+        <p className="text-[10px] font-medium text-primary uppercase">
           {n} — {title}
         </p>
         <div>{children}</div>
@@ -60,7 +60,7 @@ function List({ items }: { items: string[] }) {
   return (
     <ul className="space-y-4">
       {items.map((it) => (
-        <li key={it} className="flex gap-4 text-lg leading-relaxed text-foreground/85">
+        <li key={it} className="flex gap-4 text-base leading-7 text-foreground/85 md:text-lg">
           <span className="mt-3 h-1 w-3 shrink-0 bg-primary/70" />
           {it}
         </li>
@@ -76,32 +76,30 @@ function ProjectPage() {
   return (
     <div className="grain min-h-screen">
       <Nav />
-      <main className="mx-auto max-w-6xl px-6 pt-32 pb-24">
+      <main className="mx-auto max-w-[90rem] px-6 pt-32 pb-24 md:px-10">
         <Reveal>
           <Link to="/" hash="work" className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground">
             <ArrowLeft size={16} /> All work
           </Link>
         </Reveal>
 
-        <header className="relative grid items-center gap-16 py-16 lg:grid-cols-[1.15fr_0.85fr] md:py-24">
-          <div className="hero-glow pointer-events-none absolute -top-20 -left-20 h-80 w-[600px] rounded-full bg-primary/10 blur-[100px]" />
-          <div>
+        <header className="relative grid min-h-[78vh] items-center gap-16 border-b border-border py-16 lg:grid-cols-[0.8fr_1.2fr] md:py-24">
+          <div className="relative z-10">
           <Reveal delay={1}>
             <div className="mb-7 flex items-center gap-4">
-              {visual && <img src={visual.icon} alt={`${p.name} app icon`} className="h-16 w-16 rounded-2xl border border-border object-cover shadow-2xl" />}
-            <p className="relative text-xs tracking-[0.2em] text-muted-foreground uppercase">
+              {visual && <img src={visual.icon} alt={`${p.name} app icon`} className="h-14 w-14 border border-border object-cover shadow-2xl" />}
+            <p className="relative text-[10px] uppercase text-muted-foreground">
               {p.domain} · {p.platforms.join(" · ")}
             </p>
             </div>
           </Reveal>
           <Reveal delay={2}>
-            <h1 className="relative mt-6 font-display text-6xl leading-[0.95] font-light tracking-tight text-foreground md:text-9xl">
-              {p.name}
-              <span className="text-primary">.</span>
+            <h1 className="relative mt-6 font-display text-7xl leading-[0.82] font-normal text-foreground md:text-9xl">
+              {p.name}<span className="text-primary">.</span>
             </h1>
           </Reveal>
           <Reveal delay={3}>
-            <p className="relative mt-6 max-w-2xl text-xl text-muted-foreground md:text-2xl">{p.tagline}</p>
+            <p className="relative mt-8 max-w-xl text-lg leading-8 text-muted-foreground md:text-xl">{p.tagline}</p>
             <div className="relative mt-10 flex flex-wrap gap-3">
               {p.links.map((l) => (
                 <a
@@ -109,7 +107,7 @@ function ProjectPage() {
                   href={l.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-transform hover:scale-[1.03]"
+                  className="inline-flex items-center gap-2 border border-primary bg-primary px-6 py-3 text-xs font-medium uppercase text-primary-foreground transition-transform hover:scale-[1.03]"
                 >
                   View on {l.label} <ArrowUpRight size={16} />
                 </a>
@@ -118,20 +116,20 @@ function ProjectPage() {
           </Reveal>
           </div>
           {visual && (
-            <Reveal delay={2} className="relative min-h-[34rem]">
-              <div className="absolute inset-8 rounded-full bg-primary/10 blur-[90px]" />
-              <div className={`absolute right-0 top-0 overflow-hidden border border-border bg-secondary shadow-2xl ${visual.landscape ? "h-64 w-full rounded-2xl lg:top-20" : "h-[31rem] w-[15.5rem] rounded-[2.4rem] p-2"}`}>
-                <img src={visual.screens[0]} alt={`${p.name} app interface`} className={`h-full w-full ${visual.landscape ? "object-cover" : "rounded-[1.9rem] object-cover object-top"}`} />
+            <Reveal delay={2} className="relative min-h-[38rem] overflow-hidden">
+              <div className="copper-line absolute top-1/2 left-0 h-px w-full" />
+              <div className={`screen-drift absolute right-[7%] top-0 overflow-hidden border border-border bg-secondary shadow-2xl ${visual.landscape ? "top-24 h-72 w-full" : "h-[35rem] w-[17.5rem] p-2"}`}>
+                <img src={visual.screens[0]} alt={`${p.name} app interface`} className={`h-full w-full ${visual.landscape ? "object-cover" : "object-cover object-top"}`} />
               </div>
-              <div className={`absolute bottom-0 left-0 overflow-hidden border border-border bg-secondary shadow-2xl transition-transform duration-700 hover:-translate-y-2 ${visual.landscape ? "h-52 w-[82%] rounded-2xl" : "h-[25rem] w-[12.5rem] -rotate-6 rounded-[2rem] p-2"}`}>
-                <img src={visual.screens[1]} alt={`${p.name} app interface detail`} className={`h-full w-full ${visual.landscape ? "object-cover" : "rounded-[1.55rem] object-cover object-top"}`} />
+              <div className={`absolute bottom-0 left-[4%] overflow-hidden border border-border bg-secondary shadow-2xl transition-transform duration-700 hover:-translate-y-2 ${visual.landscape ? "h-56 w-[76%]" : "h-[27rem] w-[13.5rem] -rotate-6 p-2"}`}>
+                <img src={visual.screens[1]} alt={`${p.name} app interface detail`} className={`h-full w-full ${visual.landscape ? "object-cover" : "object-cover object-top"}`} />
               </div>
             </Reveal>
           )}
         </header>
 
         <Block n="01" title="Overview">
-          <p className="font-display text-2xl leading-snug font-light text-foreground md:text-3xl">{p.overview}</p>
+          <p className="font-display text-3xl leading-snug font-normal text-foreground md:text-5xl">{p.overview}</p>
         </Block>
         <Block n="02" title="The product">
           <List items={p.features} />
@@ -148,7 +146,7 @@ function ProjectPage() {
         <Block n="06" title="Technology">
           <div className="flex flex-wrap gap-2">
             {p.stack.map((t) => (
-              <span key={t} className="rounded-full border border-border bg-card px-4 py-2 text-sm text-foreground/85">
+              <span key={t} className="border border-border bg-card px-4 py-2 text-xs uppercase text-foreground/85">
                 {t}
               </span>
             ))}
@@ -156,7 +154,7 @@ function ProjectPage() {
         </Block>
         {p.outcome && (
           <Block n="07" title="Outcome">
-            <p className="font-display text-3xl leading-snug font-light text-primary md:text-4xl">{p.outcome}</p>
+            <p className="font-display text-4xl leading-snug font-normal italic text-primary md:text-6xl">{p.outcome}</p>
           </Block>
         )}
         <Block n={p.outcome ? "08" : "07"} title="Links">
@@ -173,11 +171,11 @@ function ProjectPage() {
           <Link
             to="/work/$slug"
             params={{ slug: next.slug }}
-            className="group mt-16 block rounded-3xl border border-border bg-card p-10 transition-colors hover:border-primary/40 md:p-14"
+            className="group mt-16 block border border-border bg-card p-10 transition-colors hover:border-primary/40 md:p-14"
           >
-            <p className="text-xs tracking-[0.2em] text-muted-foreground uppercase">Next project</p>
+            <p className="text-[10px] text-muted-foreground uppercase">Next project</p>
             <div className="mt-4 flex items-center justify-between gap-6">
-              <h2 className="font-display text-4xl font-light text-foreground md:text-6xl">{next.name}</h2>
+              <h2 className="font-display text-5xl font-normal text-foreground md:text-7xl">{next.name}</h2>
               <ArrowRight className="text-primary transition-transform duration-300 group-hover:translate-x-2" size={32} />
             </div>
             <p className="mt-2 text-muted-foreground">{next.tagline}</p>
