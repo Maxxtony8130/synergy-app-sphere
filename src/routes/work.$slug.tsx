@@ -45,9 +45,9 @@ function ProjectNotFound() {
 
 function Block({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
   return (
-    <Reveal>
+    <Reveal variant="title">
       <section className="grid gap-8 border-t border-border py-16 md:grid-cols-[260px_1fr] md:py-24">
-        <p className="text-[10px] font-medium text-primary uppercase">
+        <p className="text-[10px] font-semibold text-primary uppercase">
           {n} — {title}
         </p>
         <div>{children}</div>
@@ -76,16 +76,16 @@ function ProjectPage() {
   return (
     <div className="grain min-h-screen">
       <Nav />
-      <main className="mx-auto max-w-[90rem] px-6 pt-32 pb-24 md:px-10">
+      <main className="mx-auto max-w-[94rem] px-6 pt-32 pb-24 md:px-10">
         <Reveal>
           <Link to="/" hash="work" className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground">
             <ArrowLeft size={16} /> All work
           </Link>
         </Reveal>
 
-        <header className="relative grid min-h-[78vh] items-center gap-16 border-b border-border py-16 lg:grid-cols-[0.8fr_1.2fr] md:py-24">
+        <header className="relative grid min-h-[82vh] items-center gap-16 border-b border-border py-16 lg:grid-cols-[0.78fr_1.22fr] md:py-24">
           <div className="relative z-10">
-          <Reveal delay={1}>
+          <Reveal variant="label" delay={1}>
             <div className="mb-7 flex items-center gap-4">
               {visual && <img src={visual.icon} alt={`${p.name} app icon`} className="h-14 w-14 border border-border object-cover shadow-2xl" />}
             <p className="relative text-[10px] uppercase text-muted-foreground">
@@ -93,8 +93,8 @@ function ProjectPage() {
             </p>
             </div>
           </Reveal>
-          <Reveal delay={2}>
-            <h1 className="relative mt-6 font-display text-7xl leading-[0.82] font-normal text-foreground md:text-9xl">
+          <Reveal variant="title" delay={2}>
+            <h1 className="relative mt-6 font-display text-7xl leading-[0.78] font-normal text-foreground md:text-[9rem]">
               {p.name}<span className="text-primary">.</span>
             </h1>
           </Reveal>
@@ -116,20 +116,42 @@ function ProjectPage() {
           </Reveal>
           </div>
           {visual && (
-            <Reveal delay={2} className="relative min-h-[38rem] overflow-hidden">
-              <div className="copper-line absolute top-1/2 left-0 h-px w-full" />
-              <div className={`screen-drift absolute right-[7%] top-0 overflow-hidden border border-border bg-secondary shadow-2xl ${visual.landscape ? "top-24 h-72 w-full" : "h-[35rem] w-[17.5rem] p-2"}`}>
+            <Reveal variant="media" delay={2} className="project-stage relative min-h-[38rem] overflow-hidden bg-card/30">
+              <div className={`screen-drift absolute right-[7%] top-0 overflow-hidden bg-secondary shadow-2xl ${visual.landscape ? "top-24 h-72 w-full" : "h-[35rem] w-[17.5rem] p-2"}`}>
                 <img src={visual.screens[0]} alt={`${p.name} app interface`} className={`h-full w-full ${visual.landscape ? "object-cover" : "object-cover object-top"}`} />
               </div>
-              <div className={`absolute bottom-0 left-[4%] overflow-hidden border border-border bg-secondary shadow-2xl transition-transform duration-700 hover:-translate-y-2 ${visual.landscape ? "h-56 w-[76%]" : "h-[27rem] w-[13.5rem] -rotate-6 p-2"}`}>
+              <div className={`absolute bottom-0 left-[4%] overflow-hidden bg-secondary shadow-2xl transition-transform duration-700 hover:-translate-y-2 ${visual.landscape ? "h-56 w-[76%]" : "h-[27rem] w-[13.5rem] -rotate-6 p-2"}`}>
                 <img src={visual.screens[1]} alt={`${p.name} app interface detail`} className={`h-full w-full ${visual.landscape ? "object-cover" : "object-cover object-top"}`} />
               </div>
             </Reveal>
           )}
         </header>
 
+        {visual && visual.screens.length > 2 && (
+          <section className="py-20 md:py-32">
+            <Reveal variant="title">
+              <div className="mb-14 flex items-end justify-between gap-6 border-b border-border pb-8">
+                <div><p className="section-label"><span />Product gallery</p><h2 className="mt-5 font-display text-4xl text-foreground md:text-6xl">Inside the experience.</h2></div>
+                <p className="hidden text-[10px] uppercase text-muted-foreground md:block">Official store imagery · {String(visual.screens.length).padStart(2, "0")} frames</p>
+              </div>
+            </Reveal>
+            <div className="gallery-rail -mx-6 flex snap-x gap-5 overflow-x-auto px-6 pb-6 md:-mx-10 md:gap-8 md:px-10">
+              {visual.screens.map((screen, index) => (
+                <Reveal key={screen} variant="media" delay={((index % 4) + 1) as 1 | 2 | 3 | 4} className="w-[72vw] shrink-0 snap-center sm:w-[19rem]">
+                  <figure>
+                    <div className="project-shadow aspect-[9/19.5] overflow-hidden bg-card p-2">
+                      <img src={screen} alt={`${p.name} official store screenshot ${index + 1}`} loading={index < 2 ? "eager" : "lazy"} className="h-full w-full object-cover object-top" />
+                    </div>
+                    <figcaption className="mt-4 flex justify-between text-[10px] uppercase text-muted-foreground"><span>{String(index + 1).padStart(2, "0")}</span><span>{p.name}</span></figcaption>
+                  </figure>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        )}
+
         <Block n="01" title="Overview">
-          <p className="font-display text-3xl leading-snug font-normal text-foreground md:text-5xl">{p.overview}</p>
+            <p className="font-display text-3xl leading-snug font-normal text-foreground md:text-5xl">{p.overview}</p>
         </Block>
         <Block n="02" title="The product">
           <List items={p.features} />
@@ -171,11 +193,11 @@ function ProjectPage() {
           <Link
             to="/work/$slug"
             params={{ slug: next.slug }}
-            className="group mt-16 block border border-border bg-card p-10 transition-colors hover:border-primary/40 md:p-14"
+            className="group mt-16 block border-t border-border py-12 transition-colors md:py-16"
           >
             <p className="text-[10px] text-muted-foreground uppercase">Next project</p>
             <div className="mt-4 flex items-center justify-between gap-6">
-              <h2 className="font-display text-5xl font-normal text-foreground md:text-7xl">{next.name}</h2>
+              <h2 className="font-display text-5xl font-normal text-foreground transition-colors group-hover:text-primary md:text-8xl">{next.name}</h2>
               <ArrowRight className="text-primary transition-transform duration-300 group-hover:translate-x-2" size={32} />
             </div>
             <p className="mt-2 text-muted-foreground">{next.tagline}</p>
