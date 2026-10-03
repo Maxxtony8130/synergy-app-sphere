@@ -25,40 +25,41 @@ export function Nav() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-all duration-500",
+        "fixed inset-x-0 top-0 z-40 transition-all duration-700",
         scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-xl"
+          ? "border-b border-border bg-background/88 backdrop-blur-xl"
           : "bg-transparent",
       )}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex max-w-[90rem] items-center justify-between px-6 py-5 md:px-10">
         <Link
           to="/"
-          className="font-display text-lg font-medium tracking-tight text-foreground"
+          className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.32em] text-foreground"
         >
-          VP<span className="text-primary">.</span>
+          <span className="flex h-6 w-6 items-center justify-center border border-border font-display text-sm text-primary">V</span>
+          Vishal Pandey
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-9 md:flex">
           {links.map((l) => (
             <a
               key={l.label}
               href={l.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
             </a>
           ))}
           <a
             href="/#contact"
-            className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-transform duration-200 hover:scale-[1.04]"
+            className="border border-primary/60 px-5 py-2.5 text-[10px] font-medium uppercase tracking-[0.18em] text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
           >
             Let's talk
           </a>
         </div>
 
         <button
-          className="text-foreground md:hidden"
+          className="flex h-10 w-10 items-center justify-center border border-border text-foreground md:hidden"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -74,7 +75,7 @@ export function Nav() {
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-3 text-base text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="border-b border-border px-3 py-4 text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
               >
                 {l.label}
               </a>
