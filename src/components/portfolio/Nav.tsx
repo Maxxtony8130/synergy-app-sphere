@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +15,7 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(true);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -22,6 +23,20 @@ export function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("portfolio-theme");
+    const nextDark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setDark(nextDark);
+    document.documentElement.classList.toggle("dark", nextDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextDark = !dark;
+    setDark(nextDark);
+    document.documentElement.classList.toggle("dark", nextDark);
+    window.localStorage.setItem("portfolio-theme", nextDark ? "dark" : "light");
+  };
 
   return (
     <header
@@ -35,13 +50,13 @@ export function Nav() {
       <nav className="mx-auto flex max-w-[100rem] items-center justify-between px-6 py-5 md:px-10 md:py-7">
         <Link
           to="/"
-          className="flex items-center gap-3 text-[10px] font-medium uppercase text-foreground"
+          className="flex items-center gap-3 text-[10px] font-semibold uppercase text-foreground"
         >
-          <span className="flex h-8 w-8 items-center justify-center border border-primary/60 font-display text-sm text-primary">V</span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-primary/60 font-display text-base italic text-primary">V</span>
           Vishal Pandey
         </Link>
 
-        <div className="hidden items-center gap-9 md:flex">
+        <div className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
             <a
               key={l.label}
@@ -51,23 +66,38 @@ export function Nav() {
               {l.label}
             </a>
           ))}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            className="h-10 w-10 rounded-full border border-border text-foreground hover:border-primary hover:bg-secondary"
+            aria-label={dark ? "Use light theme" : "Use dark theme"}
+            title={dark ? "Use light theme" : "Use dark theme"}
+          >
+            {dark ? <Sun size={16} /> : <Moon size={16} />}
+          </Button>
           <a
             href="/#contact"
-            className="border border-border px-6 py-3 text-[10px] font-medium uppercase text-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
+            className="editorial-button min-h-11 border border-border px-6 text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground"
           >
             Let's talk
           </a>
         </div>
 
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-10 w-10 rounded-none border-border text-foreground md:hidden"
-          onClick={() => setOpen(!open)}
-          aria-label={open ? "Close menu" : "Open menu"}
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </Button>
+        <div className="flex items-center gap-2 md:hidden">
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-10 w-10 rounded-full border border-border text-foreground" aria-label={dark ? "Use light theme" : "Use dark theme"}>
+            {dark ? <Sun size={17} /> : <Moon size={17} />}
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full border-border text-foreground"
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </Button>
+        </div>
       </nav>
 
       {open && (

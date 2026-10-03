@@ -12,3 +12,4 @@
 - Keep image URL mapping centralized in `src/lib/project-assets.ts`, with deployable media committed under `public/assets`, so every host serves identical artwork.
 - Keep cinematic motion CSS-first with reduced-motion fallbacks, so the portfolio stays lightweight and accessible.
 - Keep portfolio sections data-driven from `portfolio-data.ts`, so authored facts remain consistent across gallery and case-study views.
+- Keep light and dark appearance driven by shared semantic tokens, with the visitor's theme choice persisted in local storage.
