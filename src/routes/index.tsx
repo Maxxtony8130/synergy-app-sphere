@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, type MouseEvent } from "react";
-import { ArrowRight, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { Nav } from "@/components/portfolio/Nav";
 import { Reveal, CountUp, SectionHeading } from "@/components/portfolio/shared";
 import {
@@ -70,11 +70,11 @@ function MagneticButton({
     if (ref.current) ref.current.style.transform = "";
   };
   const base =
-    "inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium transition-[transform,background-color,color] duration-300 ease-out";
+    "inline-flex items-center gap-3 border px-6 py-3.5 text-xs font-medium uppercase tracking-[0.16em] transition-[transform,background-color,color,border-color] duration-300 ease-out";
   const styles =
     variant === "primary"
-      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-      : "border border-border bg-secondary/40 text-foreground backdrop-blur hover:bg-secondary";
+      ? "border-primary bg-primary text-primary-foreground hover:bg-primary/85"
+      : "border-border bg-background/30 text-foreground backdrop-blur hover:border-primary/60 hover:bg-secondary";
   return (
     <a ref={ref} href={href} onMouseMove={onMove} onMouseLeave={onLeave} className={`${base} ${styles}`}>
       {children}
@@ -84,93 +84,56 @@ function MagneticButton({
 
 function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-16">
-      {/* backdrop */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="hero-glow absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
-        <div
-          className="absolute inset-0 opacity-[0.25]"
-          style={{
-            backgroundImage:
-              "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
-            backgroundSize: "72px 72px",
-            maskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)",
-            WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)",
-          }}
-        />
+    <section className="relative flex min-h-[96vh] items-center justify-center overflow-hidden border-b border-border pt-24">
+      <div className="absolute inset-x-0 top-0 z-10 flex justify-between px-6 pt-24 text-[9px] font-medium uppercase tracking-[0.24em] text-muted-foreground md:px-10">
+        <span>Portfolio / 2026</span>
+        <span className="flex items-center gap-2"><i className="soft-pulse h-1.5 w-1.5 rounded-full bg-primary" /> Available for projects</span>
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 md:grid-cols-[1.4fr_1fr]">
-        <div>
-          <Reveal>
-            <p className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-border bg-secondary/40 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur">
-              <span className="soft-pulse h-1.5 w-1.5 rounded-full bg-primary" />
-              Available for new projects
-            </p>
-          </Reveal>
-          <Reveal delay={1}>
-            <h1 className="font-display text-5xl leading-[0.98] font-light tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
-              Vishal
-              <br />
-              Pandey<span className="text-primary">.</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={2}>
-            <p className="mt-6 text-sm font-medium tracking-[0.2em] text-primary uppercase">
-              {profile.title}
-            </p>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-              Building high-performance mobile products for iOS and Android.{" "}
-              <span className="text-foreground">5+ years. 9 apps in production.</span>
-            </p>
-          </Reveal>
-          <Reveal delay={3}>
-            <div className="mt-10 flex flex-wrap items-center gap-3">
-              <MagneticButton href="#work">
-                View My Work <ArrowRight size={16} />
-              </MagneticButton>
-              <MagneticButton href="#contact" variant="ghost">
-                Let's Work Together
-              </MagneticButton>
-            </div>
-            <div className="mt-10 flex items-center gap-5 text-muted-foreground">
-              <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-foreground">
-                <Linkedin size={20} />
-              </a>
-              <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="transition-colors hover:text-foreground">
-                <Github size={20} />
-              </a>
-              <a href={`mailto:${profile.email}`} aria-label="Email" className="transition-colors hover:text-foreground">
-                <Mail size={20} />
-              </a>
-              <span className="h-px w-10 bg-border" />
-              <span className="text-xs">{profile.location}</span>
-            </div>
-          </Reveal>
-        </div>
+      <div className="cinematic-mask pointer-events-none absolute inset-y-10 left-1/2 w-[min(74vw,42rem)] -translate-x-1/2 opacity-75">
+        <img
+          src="/assets/profile/vishal-pandey.webp"
+          alt="Vishal Pandey, Senior React Native Developer"
+          width={720}
+          height={900}
+          className="portrait-breathe h-full w-full object-cover object-top"
+        />
+        <div className="absolute inset-0 bg-background/25" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background via-background/70 to-transparent" />
+      </div>
 
-        <Reveal delay={2} className="relative mx-auto w-full max-w-sm">
-          <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-primary/25 via-transparent to-transparent blur-2xl" />
-          <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-2xl">
-            <img
-              src="/assets/profile/vishal-pandey.webp"
-              alt="Vishal Pandey, Senior React Native Developer"
-              width={480}
-              height={480}
-              className="aspect-[4/5] w-full object-cover grayscale-[15%]"
-            />
-            <div className="absolute inset-x-3 bottom-3 rounded-2xl border border-border bg-background/70 p-4 backdrop-blur-xl">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Shipping since</span>
-                <span className="font-medium text-foreground">2020</span>
-              </div>
-              <div className="mt-2 flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Platforms</span>
-                <span className="font-medium text-foreground">iOS · Android</span>
-              </div>
-            </div>
+      <div className="relative z-20 mx-auto flex w-full max-w-[90rem] flex-col items-center px-6 text-center">
+        <Reveal>
+          <p className="mb-7 text-[10px] font-medium uppercase tracking-[0.35em] text-primary">{profile.title}</p>
+        </Reveal>
+        <Reveal delay={1}>
+          <h1 className="font-display text-[clamp(4.25rem,13vw,12rem)] leading-[0.72] font-normal text-foreground">
+            Vishal <span className="italic text-foreground/72">Pandey</span>
+          </h1>
+        </Reveal>
+        <Reveal delay={2}>
+          <div className="copper-line mx-auto mt-9 h-px w-48" />
+          <p className="mx-auto mt-8 max-w-lg text-sm leading-7 text-muted-foreground md:text-base">
+            Building high-performance mobile products for iOS and Android. <span className="text-foreground">5+ years. 9 apps in production.</span>
+          </p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <MagneticButton href="#work">Explore work <ArrowRight size={15} /></MagneticButton>
+            <MagneticButton href="#contact" variant="ghost">Start a project</MagneticButton>
           </div>
         </Reveal>
+      </div>
+
+      <div className="absolute inset-x-6 bottom-6 z-20 flex items-end justify-between md:inset-x-10 md:bottom-8">
+        <div className="flex items-center gap-4 text-muted-foreground">
+          <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-primary"><Linkedin size={17} /></a>
+          <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="transition-colors hover:text-primary"><Github size={17} /></a>
+          <a href={`mailto:${profile.email}`} aria-label="Email" className="transition-colors hover:text-primary"><Mail size={17} /></a>
+        </div>
+        <a href="#about" className="group flex flex-col items-center gap-2 text-[9px] uppercase tracking-[0.22em] text-muted-foreground">
+          <span className="relative h-12 w-px overflow-hidden bg-border"><i className="scroll-line absolute inset-x-0 top-0 h-1/2 bg-primary" /></span>
+          Scroll
+        </a>
+        <span className="hidden text-[9px] uppercase tracking-[0.18em] text-muted-foreground md:block">{profile.location}</span>
       </div>
     </section>
   );
@@ -178,11 +141,11 @@ function Hero() {
 
 function About() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-28 md:py-40">
+    <section id="about" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-28 md:py-44">
       <Reveal>
         <p className="font-display text-3xl leading-[1.25] font-light text-muted-foreground md:text-5xl">
           I turn product ideas into{" "}
-          <span className="text-foreground">production mobile apps</span> — owning architecture,
+          <span className="italic text-primary">production mobile apps</span> — owning architecture,
           real-time and offline-first data, payments, authentication, and{" "}
           <span className="text-foreground">the road to the App Store and Google Play.</span>
         </p>
@@ -228,59 +191,53 @@ function Proof() {
 
 function Work() {
   return (
-    <section id="work" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-28 md:py-40">
+    <section id="work" className="mx-auto max-w-[90rem] scroll-mt-20 px-6 py-28 md:px-10 md:py-44">
       <SectionHeading kicker="Selected work" title="Nine products, live in the stores." />
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="grid gap-px bg-border">
         {projects.map((p, i) => {
           const visual = projectAssets[p.slug];
           return (
-          <Reveal key={p.slug} delay={((i % 2) + 1) as 1 | 2} className={i === 0 ? "md:col-span-2" : ""}>
+          <Reveal key={p.slug} delay={1}>
             <Link
               to="/work/$slug"
               params={{ slug: p.slug }}
-              className={`group relative block min-h-[30rem] overflow-hidden rounded-3xl border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 ${i === 0 ? "md:min-h-[36rem]" : ""}`}
+              className="group relative grid min-h-[34rem] overflow-hidden bg-background transition-colors duration-700 hover:bg-card md:grid-cols-2"
             >
               {visual && (
-                <div className="absolute inset-x-0 bottom-0 h-[58%] overflow-hidden bg-secondary">
+                <div className={`relative min-h-[24rem] overflow-hidden bg-secondary ${i % 2 ? "md:order-2" : ""}`}>
                   <img
                     src={visual.screens[0]}
                     alt={`${p.name} app screen`}
                     loading="lazy"
-                    className={`h-full w-full transition duration-700 group-hover:scale-[1.03] ${visual.landscape ? "object-cover" : "object-cover object-top"}`}
+                    className={`absolute inset-0 h-full w-full transition duration-1000 group-hover:scale-[1.035] group-hover:grayscale-0 ${visual.landscape ? "object-cover grayscale-[35%]" : "object-cover object-top grayscale-[35%]"}`}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-card via-card/15 to-card/90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/65 via-transparent to-background/10" />
                 </div>
               )}
-              <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-primary/0 blur-3xl transition-colors duration-700 group-hover:bg-primary/15" />
-              <div className="relative z-10 flex items-start justify-between gap-6 p-8 md:p-10">
+              <div className={`relative z-10 flex min-h-[30rem] flex-col justify-between p-8 md:p-14 ${i % 2 ? "md:order-1" : ""}`}>
+                <div className="flex items-start justify-between gap-6">
                 <div>
                   <div className="flex items-center gap-4">
-                    {visual && <img src={visual.icon} alt="" className="h-14 w-14 rounded-2xl border border-border object-cover shadow-xl" />}
-                    <p className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
+                    {visual && <img src={visual.icon} alt={`${p.name} icon`} className="h-12 w-12 border border-border object-cover" />}
+                    <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                       {String(i + 1).padStart(2, "0")} — {p.domain}
                     </p>
                   </div>
-                  <h3 className={`mt-5 font-display font-light tracking-tight text-foreground ${i === 0 ? "text-5xl md:text-7xl" : "text-4xl md:text-5xl"}`}>{p.name}</h3>
-                  <p className="mt-2 text-muted-foreground">{p.tagline}</p>
+                  <h3 className="mt-8 font-display text-5xl font-normal text-foreground md:text-7xl">{p.name}</h3>
+                  <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">{p.tagline}</p>
                 </div>
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border text-foreground transition-all duration-500 group-hover:rotate-45 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-border text-foreground transition-all duration-500 group-hover:rotate-45 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
                   <ArrowUpRight size={18} />
                 </span>
-              </div>
-              <div className="absolute inset-x-0 bottom-0 z-10 p-8 md:p-10">
-              {p.outcome && <p className="max-w-xl border-l-2 border-primary/60 bg-background/55 py-2 pr-3 pl-4 text-sm text-foreground backdrop-blur-md">{p.outcome}</p>}
-              <div className="mt-5 flex flex-wrap gap-2">
-                {p.platforms.map((pl) => (
-                  <span key={pl} className="rounded-full bg-background/75 px-3 py-1 text-xs text-primary backdrop-blur-md">
-                    {pl}
-                  </span>
-                ))}
-                {p.stack.slice(0, 3).map((t) => (
-                  <span key={t} className="rounded-full border border-border bg-background/75 px-3 py-1 text-xs text-foreground/80 backdrop-blur-md">
-                    {t}
-                  </span>
-                ))}
-              </div>
+                </div>
+                <div>
+                  {p.outcome && <p className="max-w-lg border-l border-primary py-1 pl-4 text-sm leading-6 text-foreground/80">{p.outcome}</p>}
+                  <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+                    {[...p.platforms, ...p.stack.slice(0, 3)].map((tag) => (
+                      <span key={tag} className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{tag}</span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </Link>
           </Reveal>
@@ -382,10 +339,10 @@ function Services() {
 function Contact() {
   return (
     <section id="contact" className="relative scroll-mt-20 overflow-hidden border-t border-border">
-      <div className="hero-glow pointer-events-none absolute bottom-0 left-1/2 h-[500px] w-[800px] -translate-x-1/2 translate-y-1/2 rounded-full bg-primary/15 blur-[120px]" />
-      <div className="relative mx-auto max-w-4xl px-6 py-32 text-center md:py-48">
+      <div className="relative mx-auto max-w-5xl px-6 py-32 text-center md:py-52">
         <Reveal>
-          <h2 className="font-display text-5xl leading-[1.02] font-light tracking-tight text-foreground md:text-8xl">
+          <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-primary">The next chapter</p>
+          <h2 className="font-display text-6xl leading-[0.9] font-normal text-foreground md:text-9xl">
             Have a product <span className="italic text-primary">in mind?</span>
           </h2>
         </Reveal>
