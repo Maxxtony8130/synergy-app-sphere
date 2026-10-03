@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -31,12 +32,12 @@ export function Nav() {
           : "bg-transparent",
       )}
     >
-      <nav className="mx-auto flex max-w-[90rem] items-center justify-between px-6 py-5 md:px-10">
+      <nav className="mx-auto flex max-w-[100rem] items-center justify-between px-6 py-5 md:px-10 md:py-7">
         <Link
           to="/"
-          className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.32em] text-foreground"
+          className="flex items-center gap-3 text-[10px] font-medium uppercase text-foreground"
         >
-          <span className="flex h-6 w-6 items-center justify-center border border-border font-display text-sm text-primary">V</span>
+          <span className="flex h-8 w-8 items-center justify-center border border-primary/60 font-display text-sm text-primary">V</span>
           Vishal Pandey
         </Link>
 
@@ -45,26 +46,28 @@ export function Nav() {
             <a
               key={l.label}
               href={l.href}
-              className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
+              className="text-[10px] uppercase text-muted-foreground transition-colors hover:text-primary"
             >
               {l.label}
             </a>
           ))}
           <a
             href="/#contact"
-            className="border border-primary/60 px-5 py-2.5 text-[10px] font-medium uppercase tracking-[0.18em] text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+            className="border border-border px-6 py-3 text-[10px] font-medium uppercase text-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
           >
             Let's talk
           </a>
         </div>
 
-        <button
-          className="flex h-10 w-10 items-center justify-center border border-border text-foreground md:hidden"
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-10 w-10 rounded-none border-border text-foreground md:hidden"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        </Button>
       </nav>
 
       {open && (
@@ -75,7 +78,7 @@ export function Nav() {
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="border-b border-border px-3 py-4 text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+                className="border-b border-border px-3 py-4 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
               >
                 {l.label}
               </a>
