@@ -131,17 +131,29 @@ function Proof() {
 }
 
 function Work() {
+  const workLayout = [
+    "md:col-span-8",
+    "md:col-span-4 md:mt-24",
+    "md:col-span-4",
+    "md:col-span-8 md:mt-24",
+    "md:col-span-8",
+    "md:col-span-4 md:mt-24",
+    "md:col-span-4",
+    "md:col-span-8 md:mt-24",
+    "md:col-span-12",
+  ];
+
   return (
     <section id="work" className="mx-auto max-w-[94rem] scroll-mt-20 px-6 py-28 md:px-10 md:py-48">
       <SectionHeading kicker="Selected work" title="Digital craftsmanship." aside="Nine products · live in the stores" />
       <div className="grid gap-x-8 gap-y-24 md:grid-cols-12">
         {projects.map((project, index) => {
           const visual = projectAssets[project.slug];
-          const reverse = index % 2 === 1;
+          const layout = workLayout[index] ?? "md:col-span-6";
           return (
-            <Reveal key={project.slug} variant="media">
-              <article className={`group ${index % 3 === 0 ? "md:col-span-8" : "md:col-span-4"} ${index % 3 === 2 ? "md:mt-24" : ""}`}>
-                <Link to="/work/$slug" params={{ slug: project.slug }} className={`project-stage relative block overflow-hidden bg-secondary ${index % 3 === 0 ? "aspect-[16/10]" : "aspect-[4/5]"}`}>
+            <Reveal key={project.slug} variant="media" className={layout}>
+              <article className="group w-full">
+                <Link to="/work/$slug" params={{ slug: project.slug }} className={`project-stage relative block overflow-hidden bg-secondary ${layout.includes("col-span-12") ? "aspect-[16/7]" : layout.includes("col-span-8") ? "aspect-[16/10]" : "aspect-[4/5]"}`}>
                   {visual && (
                     <div className="absolute inset-0 flex items-center justify-center gap-5 p-10 md:p-16">
                        <div className={`device-frame project-screen project-shadow relative z-10 overflow-hidden bg-background ${visual.landscape ? "w-[88%]" : "h-[80%] w-[43%] -rotate-3"}`}>
