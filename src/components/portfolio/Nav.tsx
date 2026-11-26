@@ -1,119 +1,142 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, Moon, Sun, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { profile } from "@/lib/portfolio-data";
 
 const links = [
-  { label: "Work", href: "/#work" },
+  { label: "Apps", href: "/#work" },
   { label: "Experience", href: "/#experience" },
   { label: "Stack", href: "/#stack" },
   { label: "Services", href: "/#services" },
-  { label: "Contact", href: "/#contact" },
 ];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("portfolio-theme");
-    const nextDark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    let saved: string | null = null;
+    try {
+      saved = window.localStorage.getItem("portfolio-theme");
+    } catch {
+      saved = null;
+    }
+    const nextDark = saved
+      ? saved === "dark"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDark(nextDark);
     document.documentElement.classList.toggle("dark", nextDark);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   const toggleTheme = () => {
     const nextDark = !dark;
     setDark(nextDark);
     document.documentElement.classList.toggle("dark", nextDark);
-    window.localStorage.setItem("portfolio-theme", nextDark ? "dark" : "light");
+    try {
+      window.localStorage.setItem("portfolio-theme", nextDark ? "dark" : "light");
+    } catch {
+      /* storage unavailable */
+    }
   };
+
+  const themeLabel = dark ? "Switch to light theme" : "Switch to dark theme";
 
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-all duration-700",
-        scrolled
-          ? "border-b border-border bg-background/88 backdrop-blur-xl"
-          : "bg-transparent",
+        "fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-300",
+        scrolled || open
+          ? "border-b border-border bg-background/80 backdrop-blur-xl"
+          : "border-b border-transparent",
       )}
     >
-      <nav className="mx-auto flex max-w-[100rem] items-center justify-between px-6 py-5 md:px-10 md:py-7">
-        <Link
-          to="/"
-          className="flex items-center gap-3 text-[10px] font-semibold uppercase text-foreground"
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-primary/60 font-display text-base italic text-primary">V</span>
+      <nav className="mx-auto flex h-16 max-w-[84rem] items-center justify-between px-5 md:h-20 md:px-10">
+        <Link to="/" className="font-display text-lg font-semibold tracking-tight text-foreground">
           Vishal Pandey
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
             <a
               key={l.label}
               href={l.href}
-              className="text-[10px] uppercase text-muted-foreground transition-colors hover:text-primary"
+              className="text-[0.95rem] text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
             </a>
           ))}
-          <Button
-            variant="ghost"
-            size="icon"
+          <button
+            type="button"
             onClick={toggleTheme}
-            className="h-10 w-10 rounded-full border border-border text-foreground hover:border-primary hover:bg-secondary"
-            aria-label={dark ? "Use light theme" : "Use dark theme"}
-            title={dark ? "Use light theme" : "Use dark theme"}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:border-foreground"
+            aria-label={themeLabel}
+            title={themeLabel}
           >
             {dark ? <Sun size={16} /> : <Moon size={16} />}
-          </Button>
-          <a
-            href="/#contact"
-            className="editorial-button min-h-11 border border-border px-6 text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground"
-          >
-            Let's talk
+          </button>
+          <a href={`mailto:${profile.email}`} className="btn btn-solid min-h-10 px-5 text-sm">
+            Email me
           </a>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-10 w-10 rounded-full border border-border text-foreground" aria-label={dark ? "Use light theme" : "Use dark theme"}>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground"
+            aria-label={themeLabel}
+          >
             {dark ? <Sun size={17} /> : <Moon size={17} />}
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-10 w-10 rounded-full border-border text-foreground"
+          </button>
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </Button>
+            {open ? <X size={19} /> : <Menu size={19} />}
+          </button>
         </div>
       </nav>
 
       {open && (
-        <div className="border-b border-border bg-background/95 backdrop-blur-xl md:hidden">
-          <div className="flex flex-col gap-1 px-6 py-4">
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="border-b border-border px-3 py-4 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {l.label}
-              </a>
+        <div className="h-[calc(100dvh-4rem)] bg-background px-5 pt-6 md:hidden">
+          <ul className="flex flex-col">
+            {[...links, { label: "Contact", href: "/#contact" }].map((l) => (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="block border-b border-border py-5 font-display text-4xl font-semibold text-foreground"
+                >
+                  {l.label}
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
+          <a href={`mailto:${profile.email}`} className="btn btn-solid mt-8 w-full">
+            Email me
+          </a>
         </div>
       )}
     </header>

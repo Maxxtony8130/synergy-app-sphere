@@ -1,12 +1,22 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowRight, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowUpRight, Check, Copy, Github, Linkedin, Mail } from "lucide-react";
 import { Nav } from "@/components/portfolio/Nav";
-import { CountUp, Reveal, SectionHeading } from "@/components/portfolio/shared";
+import {
+  AppIcon,
+  CountUp,
+  Phone,
+  Section,
+  StoreBadge,
+  usePrefersReducedMotion,
+} from "@/components/portfolio/shared";
 import { experience, profile, projects, services, stats, techGroups } from "@/lib/portfolio-data";
-import { projectAssets } from "@/lib/project-assets";
+import { previewScreens, projectAssets } from "@/lib/project-assets";
+import { cn } from "@/lib/utils";
 
-const TITLE = "Vishal Pandey — Senior React Native Developer";
-const DESC = "Senior React Native Developer with 5+ years building high-performance iOS and Android apps. 9 production apps shipped across fintech, SaaS, sports-tech and more.";
+const TITLE = "Vishal Pandey, Senior React Native Developer";
+const DESC =
+  "Senior React Native developer with 5+ years building iOS and Android apps. 9 production apps shipped across fintech, SaaS, sports-tech, social, real estate and e-commerce.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,114 +26,201 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/assets/profile/vishal-pandey.webp" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESC },
     ],
-    scripts: [{
-      type: "application/ld+json",
-      children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: profile.name,
-        jobTitle: profile.title,
-        email: `mailto:${profile.email}`,
-        address: { "@type": "PostalAddress", addressLocality: "Noida", addressCountry: "IN" },
-        sameAs: [profile.linkedin, profile.github],
-        knowsAbout: ["React Native", "Expo", "TypeScript", "iOS", "Android", "Mobile App Development"],
-      }),
-    }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: profile.name,
+          jobTitle: profile.title,
+          email: `mailto:${profile.email}`,
+          address: { "@type": "PostalAddress", addressLocality: "Noida", addressCountry: "IN" },
+          sameAs: [profile.linkedin, profile.github],
+          knowsAbout: ["React Native", "Expo", "TypeScript", "iOS", "Android", "Mobile App Development"],
+        }),
+      },
+    ],
   }),
   component: Index,
 });
 
+const DOCK_MS = 4500;
+
 function Hero() {
-  return (
-    <section className="relative min-h-screen overflow-hidden px-6 pb-20 pt-32 md:px-10 md:pb-14 md:pt-40">
-      <div className="mx-auto flex min-h-[calc(100vh-12rem)] max-w-[100rem] flex-col justify-between">
-        <div className="flex items-center justify-between text-[10px] font-medium uppercase text-muted-foreground">
-          <span>Portfolio / 2026 edition</span>
-          <span className="flex items-center gap-3"><i className="soft-pulse h-1.5 w-1.5 rounded-full bg-primary" /> Available for projects</span>
-        </div>
-        <div className="relative grid items-end gap-12 py-14 lg:grid-cols-12 lg:py-8">
-          <div className="relative z-20 lg:col-span-9">
-            <Reveal variant="label"><p className="section-label"><span />{profile.title}</p></Reveal>
-            <Reveal variant="title" delay={1}>
-              <h1 className="mt-8 font-display text-[clamp(4.5rem,11vw,10.5rem)] leading-[0.78] font-normal text-foreground">
-                Building mobile<br /><em className="text-primary">experiences</em> that<br />perform.
-              </h1>
-            </Reveal>
-          </div>
-          <Reveal variant="media" delay={2} className="relative lg:col-span-3 lg:-ml-24">
-            <div className="portrait-frame relative mx-auto aspect-[4/5] max-w-sm overflow-hidden bg-secondary lg:mb-5">
-              <img src="/assets/profile/vishal-pandey.webp" alt="Vishal Pandey, Senior React Native Developer" width={720} height={900} className="portrait-breathe h-full w-full object-cover object-top grayscale" />
-              <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background/80 to-transparent" />
-              <p className="absolute bottom-5 left-5 text-[10px] font-semibold uppercase text-foreground">Vishal Pandey · Noida</p>
-            </div>
-          </Reveal>
-          <Reveal delay={3} className="lg:col-start-9 lg:col-span-4">
-            <p className="max-w-lg text-base leading-8 text-muted-foreground md:text-lg">{profile.positioning}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#work" className="editorial-button bg-foreground text-background">Explore work <ArrowRight size={15} /></a>
-              <a href="#contact" className="editorial-button border border-border text-foreground">Start a project</a>
-            </div>
-          </Reveal>
-        </div>
-        <div className="flex items-end justify-between border-t border-border pt-5">
-        <div className="flex items-center gap-5 text-muted-foreground">
-          <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-primary"><Linkedin size={16} /></a>
-          <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="transition-colors hover:text-primary"><Github size={16} /></a>
-          <a href={`mailto:${profile.email}`} aria-label="Email" className="transition-colors hover:text-primary"><Mail size={16} /></a>
-        </div>
-        <a href="#about" className="flex items-center gap-3 text-[9px] font-semibold uppercase text-muted-foreground"><span className="relative h-px w-12 overflow-hidden bg-border"><i className="scroll-line-horizontal absolute inset-y-0 left-0 w-1/2 bg-primary" /></span>Scroll</a>
-        <span className="hidden text-[9px] uppercase text-muted-foreground md:block">{profile.location}</span>
-        </div>
-      </div>
-    </section>
-  );
-}
+  const reduced = usePrefersReducedMotion();
+  const [active, setActive] = useState(0);
+  const [auto, setAuto] = useState(true);
+  const project = projects[active]!;
+  const visual = projectAssets[project.slug];
 
-function About() {
+  useEffect(() => {
+    if (!auto || reduced) return;
+    const t = window.setTimeout(() => setActive((i) => (i + 1) % projects.length), DOCK_MS);
+    return () => window.clearTimeout(t);
+  }, [active, auto, reduced]);
+
+  const choose = (i: number) => {
+    setAuto(false);
+    setActive(i);
+  };
+
   return (
-    <section id="about" className="mx-auto max-w-[100rem] scroll-mt-24 px-6 py-28 md:px-10 md:py-48">
-      <div className="grid gap-12 lg:grid-cols-[0.32fr_0.68fr]">
-        <Reveal variant="label"><p className="section-label"><span />Portfolio perspective</p></Reveal>
-        <Reveal variant="title">
-          <p className="font-display text-4xl leading-[1.12] text-muted-foreground md:text-6xl">
-            I turn product ideas into <em className="text-primary">production mobile apps</em> — owning architecture, real-time and offline-first data, payments, authentication, and <span className="text-foreground">the road to both stores.</span>
+    <section className="relative overflow-hidden px-5 pt-28 pb-16 md:px-10 md:pt-36 md:pb-24">
+      <div className="mx-auto grid max-w-[84rem] items-center gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+        <div>
+          <p className="rise flex items-center gap-3 text-[0.95rem] text-muted-foreground">
+            <span className="soft-pulse h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
+            Senior React Native developer in Noida, available for projects
           </p>
-        </Reveal>
+          <h1
+            className="rise mt-7 text-[clamp(3.1rem,8.4vw,7.6rem)] font-bold leading-[0.92]"
+            style={{ animationDelay: "80ms" }}
+          >
+            Nine apps live in the stores. I built them.
+          </h1>
+          <p
+            className="rise mt-8 max-w-[52ch] text-lg leading-relaxed text-muted-foreground md:text-xl"
+            style={{ animationDelay: "160ms" }}
+          >
+            {profile.summary}
+          </p>
+          <div className="rise mt-10 flex flex-wrap items-center gap-3" style={{ animationDelay: "240ms" }}>
+            <a href="#work" className="btn btn-solid">
+              See the apps
+            </a>
+            <a href={`mailto:${profile.email}`} className="btn btn-ghost">
+              Email me
+            </a>
+            <div className="ml-2 flex items-center gap-1 text-muted-foreground">
+              <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="flex h-10 w-10 items-center justify-center rounded-full hover:text-foreground">
+                <Linkedin size={18} />
+              </a>
+              <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="flex h-10 w-10 items-center justify-center rounded-full hover:text-foreground">
+                <Github size={18} />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* The live phone: the one memorable element on the page */}
+        <div className="rise flex flex-col items-center" style={{ animationDelay: "200ms" }}>
+          <div className="relative w-[min(17.5rem,68vw)]">
+            <div
+              aria-hidden
+              className="absolute -inset-x-16 top-10 -z-10 h-[70%] rounded-full bg-primary/15 blur-3xl"
+            />
+            {visual && (
+              <Phone
+                key={project.slug}
+                slug={project.slug}
+                src={visual.cover}
+                alt={`${project.name} app screenshot`}
+                eager
+                imgClassName="screen-in"
+              />
+            )}
+          </div>
+          <div className="mt-7 flex min-h-[3.5rem] w-full max-w-sm items-center gap-4" aria-live="polite">
+            <AppIcon slug={project.slug} name={project.name} className="h-12 w-12 shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-display text-xl font-semibold">{project.name}</p>
+              <p className="truncate text-sm text-muted-foreground">{project.tagline}</p>
+            </div>
+            <Link
+              to="/work/$slug"
+              params={{ slug: project.slug }}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-input transition-colors hover:border-foreground"
+              aria-label={`Read the ${project.name} case study`}
+            >
+              <ArrowUpRight size={18} />
+            </Link>
+          </div>
+        </div>
       </div>
-      <div className="mt-24 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-3">
-        {[
-          ["End-to-end ownership", "Multiple apps shipped as sole developer or technical lead — from first commit to store release."],
-          ["Built for real conditions", "Offline-first storage, background uploads, retry logic, and low-connectivity handling."],
-          ["Performance at scale", "State, sync, and rendering optimized to support 5,000+ concurrent users."],
-        ].map(([title, copy], index) => (
-          <Reveal key={title} delay={(index + 1) as 1 | 2 | 3}>
-            <article className="group h-full bg-background p-8 transition-colors duration-500 hover:bg-secondary md:p-10">
-              <span className="font-display text-xl italic text-primary">0{index + 1}</span>
-              <h3 className="mt-8 text-lg font-medium text-foreground">{title}</h3>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">{copy}</p>
-            </article>
-          </Reveal>
-        ))}
+
+      {/* Dock: pick an app to put it on the phone */}
+      <div className="mx-auto mt-14 max-w-[84rem] md:mt-20">
+        <div
+          role="group"
+          aria-label="Choose an app to preview"
+          className="no-scrollbar mx-auto flex w-fit max-w-full gap-3 overflow-x-auto rounded-[1.75rem] border border-border bg-card/70 p-3 backdrop-blur-xl md:gap-4 md:p-4"
+          onMouseEnter={() => setAuto(false)}
+        >
+          {projects.map((p, i) => (
+            <button
+              key={p.slug}
+              type="button"
+              onClick={() => choose(i)}
+              aria-pressed={i === active}
+              aria-label={`Show ${p.name}`}
+              title={p.name}
+              className={cn(
+                "relative shrink-0 rounded-[24%] transition-transform duration-200 hover:-translate-y-1",
+                i === active ? "ring-2 ring-primary ring-offset-2 ring-offset-card" : "opacity-80 hover:opacity-100",
+              )}
+            >
+              <AppIcon slug={p.slug} name={p.name} className="h-12 w-12 md:h-14 md:w-14" />
+              {i === active && auto && !reduced && (
+                <span className="absolute inset-x-2 -bottom-2 h-0.5 overflow-hidden rounded-full bg-border">
+                  <span
+                    key={active}
+                    className="dock-progress block h-full bg-primary"
+                    style={{ ["--dock-duration" as string]: `${DOCK_MS}ms` }}
+                  />
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function Proof() {
+function Numbers() {
   return (
-    <section className="theme-inverse py-24 text-background md:py-32">
-      <div className="mx-auto grid max-w-[100rem] grid-cols-2 gap-px px-6 md:grid-cols-3 md:px-10">
-        {stats.map((stat, index) => (
-          <Reveal key={stat.label} delay={((index % 3) + 1) as 1 | 2 | 3}>
-            <div className="border-l border-background/20 px-5 py-6 md:px-10">
-              <div className="font-display text-5xl md:text-8xl"><CountUp value={stat.value} suffix={stat.suffix} /></div>
-              <p className="mt-3 max-w-[12rem] text-xs text-background/65">{stat.label}</p>
-            </div>
-          </Reveal>
+    <section aria-label="Track record" className="border-y border-border bg-card">
+      <dl className="mx-auto grid max-w-[84rem] grid-cols-2 md:grid-cols-3">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="border-border px-5 py-8 odd:border-r md:border-r md:px-10 md:py-12 md:[&:nth-child(3n)]:border-r-0 [&:nth-child(n+3)]:border-t md:[&:nth-child(n+3)]:border-t-0 md:[&:nth-child(n+4)]:border-t"
+          >
+            <dt className="text-sm text-muted-foreground">{stat.label}</dt>
+            <dd className="mt-2 font-display text-[clamp(2.4rem,5vw,4rem)] font-semibold leading-none tracking-tight">
+              <CountUp value={stat.value} suffix={stat.suffix} />
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+function Principles() {
+  const items = [
+    ["End-to-end ownership", "Multiple apps shipped as sole developer or technical lead, from first commit to store release."],
+    ["Built for real conditions", "Offline-first storage, background uploads, retry logic and low-connectivity handling."],
+    ["Performance at scale", "State, sync and rendering tuned to support 5,000+ concurrent users."],
+  ];
+  return (
+    <section className="mx-auto max-w-[84rem] px-5 pt-24 md:px-10 md:pt-36">
+      <p className="max-w-[24ch] font-display text-[clamp(1.9rem,4vw,3.4rem)] font-medium leading-[1.08] tracking-tight">
+        I take product ideas to production: architecture, offline and real-time data, payments, sign-in, and the
+        release to both stores.
+      </p>
+      <div className="mt-14 grid gap-10 md:grid-cols-3">
+        {items.map(([title, copy]) => (
+          <div key={title} className="border-t border-foreground pt-5">
+            <h3 className="text-xl font-semibold tracking-tight">{title}</h3>
+            <p className="mt-3 max-w-[38ch] text-muted-foreground">{copy}</p>
+          </div>
         ))}
       </div>
     </section>
@@ -131,98 +228,228 @@ function Proof() {
 }
 
 function Work() {
-  const workLayout = [
-    "md:col-span-8",
-    "md:col-span-4 md:mt-24",
-    "md:col-span-4",
-    "md:col-span-8 md:mt-24",
-    "md:col-span-8",
-    "md:col-span-4 md:mt-24",
-    "md:col-span-4",
-    "md:col-span-8 md:mt-24",
-    "md:col-span-12",
-  ];
-
   return (
-    <section id="work" className="mx-auto max-w-[94rem] scroll-mt-20 px-6 py-28 md:px-10 md:py-48">
-      <SectionHeading kicker="Selected work" title="Digital craftsmanship." aside="Nine products · live in the stores" />
-      <div className="grid gap-x-8 gap-y-24 md:grid-cols-12">
-        {projects.map((project, index) => {
-          const visual = projectAssets[project.slug];
-          const layout = workLayout[index] ?? "md:col-span-6";
+    <Section
+      id="work"
+      title="The apps"
+      intro="Every screen below is the app's own App Store or Google Play screenshot. Open any app for the full case study."
+    >
+      <ul className="border-t border-border">
+        {projects.map((project) => {
+          const shots = previewScreens(project.slug, 3);
           return (
-            <Reveal key={project.slug} variant="media" className={layout}>
-              <article className="group w-full">
-                <Link to="/work/$slug" params={{ slug: project.slug }} className={`project-stage relative block overflow-hidden bg-secondary ${layout.includes("col-span-12") ? "aspect-[16/7]" : layout.includes("col-span-8") ? "aspect-[16/10]" : "aspect-[4/5]"}`}>
-                  {visual && (
-                    <div className="absolute inset-0 flex items-center justify-center gap-5 p-10 md:p-16">
-                       <div className={`device-frame project-screen project-shadow relative z-10 overflow-hidden bg-background ${visual.landscape ? "w-[88%]" : "h-[80%] w-[43%] -rotate-3"}`}>
-                        <img src={visual.screens[0]} alt={`${project.name} app interface`} loading="lazy" className={`h-full w-full ${visual.landscape ? "object-cover" : "object-cover object-top"}`} />
-                      </div>
-                       {!visual.landscape && <div className="device-frame project-screen relative mt-20 h-[68%] w-[35%] rotate-6 overflow-hidden bg-background opacity-60"><img src={visual.screens[1]} alt={`${project.name} app interface detail`} loading="lazy" className="h-full w-full object-cover object-top" /></div>}
-                    </div>
-                  )}
-                  <span className="absolute right-5 top-5 flex h-12 w-12 items-center justify-center border border-foreground/15 bg-background/40 text-foreground backdrop-blur-md transition-all duration-500 group-hover:rotate-45 group-hover:bg-primary group-hover:text-primary-foreground"><ArrowUpRight size={17} /></span>
-                </Link>
-                <div className="mt-7">
+            <li key={project.slug} className="group border-b border-border py-12 md:py-16">
+              <article className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+                <div className="flex flex-col">
                   <div className="flex items-center gap-5">
-                    {visual && <img src={visual.icon} alt={`${project.name} icon`} className="h-14 w-14 border border-border object-cover" />}
-                    <div><p className="text-[10px] uppercase text-primary">{String(index + 1).padStart(2, "0")} — {project.domain}</p><p className="mt-1 text-[10px] uppercase text-muted-foreground">{project.tagline}</p></div>
+                    <AppIcon slug={project.slug} name={project.name} className="h-16 w-16 md:h-20 md:w-20" />
+                    <div>
+                      <h3 className="text-[clamp(2rem,4vw,3.25rem)] font-semibold">{project.name}</h3>
+                      <p className="mt-1 text-muted-foreground">{project.tagline}</p>
+                    </div>
                   </div>
-                   <h3 className="mt-7 font-display text-4xl leading-none text-foreground transition-colors duration-500 group-hover:text-primary md:text-6xl">{project.name}.</h3>
-                   <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground">{project.overview}</p>
-                   {project.outcome && <p className="mt-5 max-w-2xl font-display text-lg italic leading-7 text-primary">{project.outcome}</p>}
-                  <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2">{[...project.platforms, ...project.stack.slice(0, 3)].map((tag) => <span key={tag} className="text-[10px] uppercase text-muted-foreground">{tag}</span>)}</div>
-                   <Link to="/work/$slug" params={{ slug: project.slug }} className="mt-7 inline-flex items-center gap-4 text-xs font-semibold uppercase text-foreground transition-colors hover:text-primary">Case study <ArrowUpRight size={15} /></Link>
+
+                  <dl className="mt-8 grid grid-cols-[7rem_1fr] gap-x-4 gap-y-2 text-[0.95rem]">
+                    <dt className="text-muted-foreground">Industry</dt>
+                    <dd>{project.domain}</dd>
+                    <dt className="text-muted-foreground">Platforms</dt>
+                    <dd>{project.platforms.join(" and ")}</dd>
+                    <dt className="text-muted-foreground">My role</dt>
+                    <dd>{project.role}</dd>
+                  </dl>
+
+                  {project.outcome && (
+                    <p className="mt-7 rounded-xl bg-primary/10 px-5 py-4 font-medium text-foreground">
+                      <span className="text-primary">Result: </span>
+                      {project.outcome}
+                    </p>
+                  )}
+
+                  <ul className="mt-7 flex flex-wrap gap-2" aria-label="Technology">
+                    {project.stack.map((t) => (
+                      <li key={t} className="rounded-full border border-input px-3 py-1 text-sm text-muted-foreground">
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-8 flex flex-wrap gap-3 lg:mt-auto lg:pt-10">
+                    <Link to="/work/$slug" params={{ slug: project.slug }} className="btn btn-solid min-h-10 px-5 text-sm">
+                      Read the case study
+                    </Link>
+                    {project.links.map((l) => (
+                      <StoreBadge key={l.url} label={l.label} url={l.url} />
+                    ))}
+                  </div>
                 </div>
+
+                <Link
+                  to="/work/$slug"
+                  params={{ slug: project.slug }}
+                  aria-label={`${project.name} case study`}
+                  tabIndex={-1}
+                  className="no-scrollbar -mx-5 flex items-start gap-4 overflow-x-auto rounded-3xl bg-secondary px-5 py-8 md:mx-0 md:gap-6 md:px-10 md:py-12"
+                >
+                  {shots.map((src, i) => (
+                    <Phone
+                      key={src}
+                      slug={project.slug}
+                      src={src}
+                      alt={`${project.name} screenshot ${i + 1}`}
+                      small
+                      className={cn(
+                        "w-[42%] shrink-0 transition-transform duration-500 ease-out sm:w-[30%]",
+                        i === 1 && "md:translate-y-8 md:group-hover:translate-y-4",
+                        i !== 1 && "md:group-hover:-translate-y-2",
+                      )}
+                    />
+                  ))}
+                </Link>
               </article>
-            </Reveal>
+            </li>
           );
         })}
-      </div>
-    </section>
+      </ul>
+    </Section>
   );
 }
 
 function Experience() {
   return (
-    <section id="experience" className="bg-secondary py-28 md:py-44">
-      <div className="mx-auto max-w-[100rem] px-6 md:px-10">
-        <SectionHeading kicker="Experience" title="Six years of shipping." />
-        <div className="relative experience-line">{experience.map((item, index) => <Reveal key={item.company}><article className="group relative grid gap-6 border-t border-border py-10 md:grid-cols-[80px_220px_1fr] md:py-14"><span className="relative z-10 font-display text-xl italic text-primary">0{index + 1}</span><div><p className="text-sm text-foreground">{item.period}</p><p className="mt-2 text-xs text-muted-foreground">{item.location}</p></div><div><h3 className="font-display text-3xl text-foreground transition-colors group-hover:text-primary md:text-4xl">{item.role}</h3><p className="mt-2 text-muted-foreground">{item.company}</p><ul className="mt-6 max-w-3xl space-y-3">{item.points.map((point) => <li key={point} className="text-sm leading-7 text-foreground/75">{point}</li>)}</ul></div></article></Reveal>)}</div>
-      </div>
-    </section>
+    <div className="bg-card">
+      <Section id="experience" title="Where I've worked" intro="Four teams, from web front ends to owning mobile architecture end to end.">
+        <ol className="relative border-l border-border md:ml-[11rem]">
+          {experience.map((item) => (
+            <li key={item.company} className="relative pb-14 pl-8 last:pb-0 md:pl-12">
+              <span aria-hidden className="absolute -left-[5px] top-2 h-[9px] w-[9px] rounded-full bg-primary" />
+              <p className="text-sm text-muted-foreground md:absolute md:-left-[11rem] md:top-1 md:w-[9.5rem] md:text-right">
+                {item.period}
+              </p>
+              <h3 className="mt-1 text-2xl font-semibold md:mt-0 md:text-3xl">{item.role}</h3>
+              <p className="mt-2 text-muted-foreground">
+                {item.company}, {item.location}
+              </p>
+              <ul className="mt-5 max-w-[70ch] list-disc space-y-2 pl-5 marker:text-muted-foreground">
+                {item.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+              <p className="mt-5 text-sm text-muted-foreground">{item.tech.join(", ")}</p>
+            </li>
+          ))}
+        </ol>
+      </Section>
+    </div>
   );
 }
 
-function StackAndServices() {
+function Stack() {
   return (
-    <>
-      <section id="stack" className="mx-auto max-w-[100rem] scroll-mt-20 px-6 py-28 md:px-10 md:py-44">
-        <SectionHeading kicker="Toolkit" title="The stack behind the products." />
-        <div className="grid gap-px overflow-hidden border border-border bg-border md:grid-cols-2 lg:grid-cols-4">{techGroups.map((group, index) => <Reveal key={group.name} delay={((index % 4) + 1) as 1 | 2 | 3 | 4}><article className="h-full bg-background p-8 transition-colors hover:bg-secondary"><p className="text-[10px] font-semibold uppercase text-primary">0{index + 1} · {group.name}</p><ul className="mt-8 space-y-2">{group.items.map((item) => <li key={item} className="text-sm text-muted-foreground">{item}</li>)}</ul></article></Reveal>)}</div>
-      </section>
-      <section id="services" className="mx-auto max-w-[100rem] scroll-mt-20 px-6 pb-28 md:px-10 md:pb-44">
-        <SectionHeading kicker="Working with me" title="Where I can help." />
-        <div>{services.map((service, index) => <Reveal key={service.title}><article className="group grid gap-5 border-t border-border py-8 transition-colors md:grid-cols-[80px_0.8fr_1.2fr] md:items-center"><span className="font-display text-lg italic text-primary">{String(index + 1).padStart(2, "0")}</span><h3 className="font-display text-3xl text-foreground transition-transform duration-500 group-hover:translate-x-2 md:text-4xl">{service.title}</h3><p className="max-w-xl text-sm leading-7 text-muted-foreground">{service.description}</p></article></Reveal>)}</div>
-      </section>
-    </>
+    <Section id="stack" title="What I work with">
+      <dl className="grid gap-x-16 md:grid-cols-2">
+        {techGroups.map((group) => (
+          <div key={group.name} className="grid grid-cols-1 gap-2 border-t border-border py-6 sm:grid-cols-[11rem_1fr]">
+            <dt className="font-semibold">{group.name}</dt>
+            <dd className="text-muted-foreground">{group.items.join(", ")}</dd>
+          </div>
+        ))}
+      </dl>
+    </Section>
+  );
+}
+
+function Services() {
+  return (
+    <div className="bg-card">
+      <Section id="services" title="How I can help" intro="Hire me to start a new app, take over a live one, or fix what is slowing it down.">
+        <div className="grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          {services.map((service) => (
+            <div key={service.title} className="bg-background p-7 md:p-8">
+              <h3 className="text-xl font-semibold tracking-tight">{service.title}</h3>
+              <p className="mt-3 text-[0.95rem] text-muted-foreground">{service.description}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+    </div>
   );
 }
 
 function Contact() {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${profile.email}`;
+    }
+  };
+
   return (
-    <section id="contact" className="theme-inverse relative scroll-mt-20 overflow-hidden text-background">
-      <div className="mx-auto max-w-[100rem] px-6 py-32 md:px-10 md:py-52">
-        <Reveal variant="label"><p className="text-[10px] uppercase text-primary">The next chapter</p></Reveal>
-        <Reveal variant="title" delay={1}><h2 className="mt-8 max-w-6xl font-display text-6xl leading-[0.86] md:text-9xl">Have a product <em className="text-primary">in mind?</em></h2></Reveal>
-        <Reveal delay={2}><div className="mt-12 flex flex-col justify-between gap-8 md:flex-row md:items-end"><p className="max-w-lg text-lg text-background/65">Let's turn your idea into a production-ready mobile experience.</p><a href={`mailto:${profile.email}`} className="editorial-button bg-primary text-primary-foreground">Start a conversation <ArrowRight size={16} /></a></div></Reveal>
+    <section id="contact" className="bg-foreground text-background">
+      <div className="mx-auto max-w-[84rem] px-5 py-24 md:px-10 md:py-36">
+        <h2 className="max-w-[14ch] text-[clamp(3rem,8vw,7rem)] font-bold leading-[0.95]">
+          Have an app to build? Let's talk.
+        </h2>
+        <p className="mt-8 max-w-[50ch] text-lg text-background/70">
+          Tell me what you're making and where it stands.
+        </p>
+        <div className="mt-12 flex flex-wrap items-center gap-4">
+          <a
+            href={`mailto:${profile.email}`}
+            className="break-all font-display text-[clamp(1.5rem,4vw,3rem)] font-semibold underline decoration-background/30 decoration-2 underline-offset-[0.18em] transition-colors hover:decoration-background"
+          >
+            {profile.email}
+          </a>
+          <button
+            type="button"
+            onClick={copy}
+            className="btn min-h-10 border border-background/30 px-4 text-sm text-background hover:border-background"
+            aria-live="polite"
+          >
+            {copied ? <Check size={16} /> : <Copy size={16} />}
+            {copied ? "Copied" : "Copy email"}
+          </button>
+        </div>
       </div>
-      <footer className="border-t border-background/20"><div className="mx-auto flex max-w-[100rem] flex-col items-center justify-between gap-5 px-6 py-10 text-xs text-background/65 md:flex-row md:px-10"><div className="flex gap-6"><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={profile.github} target="_blank" rel="noreferrer">GitHub</a><a href={`mailto:${profile.email}`}>Email</a></div><span>{profile.location}</span><a href="#" aria-label="Back to top" className="flex h-10 w-10 items-center justify-center rounded-full border border-background/20"><ArrowDown className="rotate-180" size={15} /></a></div></footer>
+      <footer className="border-t border-background/15">
+        <div className="mx-auto flex max-w-[84rem] flex-col gap-5 px-5 py-8 text-sm text-background/70 md:flex-row md:items-center md:justify-between md:px-10">
+          <p>
+            {profile.name}, {profile.location}. {new Date().getFullYear()}.
+          </p>
+          <div className="flex gap-6">
+            <a href={profile.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-background">
+              <Linkedin size={16} /> LinkedIn
+            </a>
+            <a href={profile.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-background">
+              <Github size={16} /> GitHub
+            </a>
+            <a href={`mailto:${profile.email}`} className="flex items-center gap-2 hover:text-background">
+              <Mail size={16} /> Email
+            </a>
+          </div>
+        </div>
+      </footer>
     </section>
   );
 }
 
 function Index() {
-  return <div className="grain min-h-screen"><Nav /><main><Hero /><About /><Proof /><Work /><Experience /><StackAndServices /><Contact /></main></div>;
+  return (
+    <div className="min-h-screen">
+      <Nav />
+      <main>
+        <Hero />
+        <Numbers />
+        <Principles />
+        <Work />
+        <Experience />
+        <Stack />
+        <Services />
+        <Contact />
+      </main>
+    </div>
+  );
 }

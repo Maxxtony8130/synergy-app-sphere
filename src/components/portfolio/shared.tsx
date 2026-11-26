@@ -1,41 +1,152 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { projectAssets } from "@/lib/project-assets";
 
-export function Reveal({ children, className, delay, variant = "default" }: { children: ReactNode; className?: string; delay?: 1 | 2 | 3 | 4; variant?: "default" | "title" | "media" | "label" }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+export function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-    const observer = new IntersectionObserver(([entry]) => { if (entry?.isIntersecting) { setVisible(true); observer.disconnect(); } }, { threshold: 0.1, rootMargin: "0px 0px -30px 0px" });
-    observer.observe(element);
-    return () => observer.disconnect();
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
   }, []);
-  return <div ref={ref} className={cn("reveal", `reveal-${variant}`, visible && "is-visible", delay && `reveal-delay-${delay}`, className)}>{children}</div>;
+  return reduced;
 }
 
-export function CountUp({ value, suffix, duration = 1600 }: { value: number; suffix?: string; duration?: number }) {
+/** A real store screenshot inside a phone frame, at the screenshot's own aspect ratio. */
+export function Phone({
+  slug,
+  src,
+  alt,
+  small,
+  eager,
+  className,
+  imgClassName,
+}: {
+  slug: string;
+  src: string;
+  alt: string;
+  small?: boolean;
+  eager?: boolean;
+  className?: string;
+  imgClassName?: string;
+}) {
+  const v = projectAssets[slug];
+  return (
+    <div className={cn("phone", small && "phone-sm", className)}>
+      <img
+        src={src}
+        alt={alt}
+        width={v?.width}
+        height={v?.height}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        className={imgClassName}
+      />
+    </div>
+  );
+}
+
+export function AppIcon({
+  slug,
+  name,
+  className,
+}: {
+  slug: string;
+  name: string;
+  className?: string;
+}) {
+  const v = projectAssets[slug];
+  if (!v) return null;
+  return (
+    <img
+      src={v.icon}
+      alt={`${name} app icon`}
+      width={512}
+      height={512}
+      loading="lazy"
+      decoding="async"
+      className={cn("app-icon object-cover", className)}
+    />
+  );
+}
+
+export function StoreBadge({ label, url }: { label: string; url: string }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noreferrer"
+      className="btn btn-ghost min-h-10 px-4 text-sm"
+    >
+      {label === "App Store" ? "Open in App Store" : "Open in Google Play"}
+    </a>
+  );
+}
+
+export function CountUp({
+  value,
+  suffix,
+  duration = 1400,
+}: {
+  value: number;
+  suffix?: string;
+  duration?: number;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(0);
+  const [display, setDisplay] = useState(value);
   const started = useRef(false);
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry?.isIntersecting || started.current) return;
-      started.current = true;
-      if (reduced) { setDisplay(value); return; }
-      const start = performance.now();
-      const tick = (now: number) => { const progress = Math.min((now - start) / duration, 1); setDisplay(Math.round((1 - Math.pow(1 - progress, 3)) * value)); if (progress < 1) requestAnimationFrame(tick); };
-      requestAnimationFrame(tick);
-    }, { threshold: 0.4 });
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setDisplay(0);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting || started.current) return;
+        started.current = true;
+        const start = performance.now();
+        const tick = (now: number) => {
+          const progress = Math.min((now - start) / duration, 1);
+          setDisplay(Math.round((1 - Math.pow(1 - progress, 3)) * value));
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      },
+      { threshold: 0.5 },
+    );
     observer.observe(element);
     return () => observer.disconnect();
   }, [value, duration]);
-  return <span ref={ref}>{display.toLocaleString("en-US")}{suffix}</span>;
+  return (
+    <span ref={ref} className="tabular-nums">
+      {display.toLocaleString("en-US")}
+      {suffix}
+    </span>
+  );
 }
 
-export function SectionHeading({ kicker, title, aside, className }: { kicker: string; title: string; aside?: string; className?: string }) {
-  return <Reveal variant="title" className={cn("mb-20 md:mb-28", className)}><div className="flex flex-col justify-between gap-8 border-b border-border pb-12 md:flex-row md:items-end"><div><p className="section-label"><span />{kicker}</p><h2 className="mt-6 max-w-5xl font-display text-5xl leading-[0.94] text-foreground md:text-8xl">{title}</h2></div>{aside && <p className="text-[10px] uppercase text-muted-foreground">{aside}</p>}</div></Reveal>;
+export function Section({
+  id,
+  title,
+  intro,
+  children,
+  className,
+}: {
+  id?: string;
+  title: string;
+  intro?: ReactNode;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section id={id} className={cn("mx-auto max-w-[84rem] px-5 py-24 md:px-10 md:py-36", className)}>
+      <div className="mb-12 grid gap-5 md:mb-16 md:grid-cols-[1fr_1fr] md:items-end">
+        <h2 className="text-[clamp(2.5rem,6vw,4.75rem)] font-semibold">{title}</h2>
+        {intro && <p className="max-w-[46ch] text-lg text-muted-foreground md:justify-self-end">{intro}</p>}
+      </div>
+      {children}
+    </section>
+  );
 }

@@ -30,53 +30,63 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-display: "Instrument Serif", Georgia, serif;
-  --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-bezel: var(--bezel);
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Palette
+   Aluminium #ECEEF1  page
+   Glass     #F7F8FA  raised surfaces
+   Graphite  #15171B  text, phone bezel
+   Slate     #5A616C  secondary text
+   Cobalt    #2C47F5  the one accent: links, focus, selected state
+*/
 :root {
-  --radius: 0.25rem;
-  --background: oklch(0.965 0.009 76);
-  --foreground: oklch(0.15 0.008 35);
-  --card: oklch(0.985 0.006 76);
-  --card-foreground: oklch(0.15 0.008 35);
-  --popover: oklch(0.985 0.006 76);
-  --popover-foreground: oklch(0.15 0.008 35);
-  --primary: oklch(0.61 0.14 38);
-  --primary-foreground: oklch(0.98 0.005 76);
-  --secondary: oklch(0.925 0.012 76);
-  --secondary-foreground: oklch(0.2 0.01 35);
-  --muted: oklch(0.925 0.012 76);
-  --muted-foreground: oklch(0.47 0.018 45);
-  --accent: oklch(0.63 0.12 42);
-  --accent-foreground: oklch(0.96 0.01 75);
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.94 0.005 260);
-  --border: oklch(0.2 0.01 35 / 18%);
-  --input: oklch(0.2 0.01 35 / 20%);
-  --ring: oklch(0.63 0.12 42);
-  --project-shadow: 0 40px 90px -35px oklch(0 0 0 / 85%);
+  --radius: 0.75rem;
+  --background: #eceef1;
+  --foreground: #15171b;
+  --card: #f7f8fa;
+  --card-foreground: #15171b;
+  --popover: #f7f8fa;
+  --popover-foreground: #15171b;
+  --primary: #2c47f5;
+  --primary-foreground: #ffffff;
+  --secondary: #e1e4e9;
+  --secondary-foreground: #15171b;
+  --muted: #e1e4e9;
+  --muted-foreground: #5a616c;
+  --accent: #2c47f5;
+  --accent-foreground: #ffffff;
+  --destructive: #c8312b;
+  --destructive-foreground: #ffffff;
+  --border: rgb(21 23 27 / 0.12);
+  --input: rgb(21 23 27 / 0.16);
+  --ring: #2c47f5;
+  --bezel: #15171b;
+  --phone-shadow: 0 50px 80px -40px rgb(21 23 27 / 0.45), 0 18px 30px -18px rgb(21 23 27 / 0.3);
 }
 
 .dark {
-  --background: oklch(0.135 0.003 35);
-  --foreground: oklch(0.93 0.01 75);
-  --card: oklch(0.175 0.008 40);
-  --card-foreground: oklch(0.945 0.012 75);
-  --popover: oklch(0.205 0.01 40);
-  --popover-foreground: oklch(0.945 0.012 75);
-  --primary: oklch(0.63 0.12 42);
-  --primary-foreground: oklch(0.96 0.01 75);
-  --secondary: oklch(0.205 0.012 38);
-  --secondary-foreground: oklch(0.9 0.012 70);
-  --muted: oklch(0.205 0.012 38);
-  --muted-foreground: oklch(0.69 0.018 60);
-  --border: oklch(0.94 0.012 75 / 15%);
-  --input: oklch(0.94 0.012 75 / 18%);
-}
-
-@utility project-shadow {
-  box-shadow: var(--project-shadow);
+  --background: #101216;
+  --foreground: #eceef1;
+  --card: #181b20;
+  --card-foreground: #eceef1;
+  --popover: #181b20;
+  --popover-foreground: #eceef1;
+  --primary: #8193ff;
+  --primary-foreground: #0b0d12;
+  --secondary: #1d2026;
+  --secondary-foreground: #eceef1;
+  --muted: #1d2026;
+  --muted-foreground: #a0a7b2;
+  --accent: #8193ff;
+  --accent-foreground: #0b0d12;
+  --border: rgb(236 238 241 / 0.12);
+  --input: rgb(236 238 241 / 0.16);
+  --ring: #8193ff;
+  --bezel: #2a2e35;
+  --phone-shadow: 0 50px 80px -40px rgb(0 0 0 / 0.8), 0 18px 30px -18px rgb(0 0 0 / 0.6);
 }
 
 @layer base {
@@ -86,16 +96,39 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    letter-spacing: 0;
     overflow-x: clip;
-    transition: background-color 450ms ease, color 450ms ease;
+    transition:
+      background-color 300ms ease,
+      color 300ms ease;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 
   ::selection {
@@ -104,213 +137,144 @@
   }
 }
 
-@keyframes scroll-line {
-  0% { transform: translateY(-110%); }
-  55% { transform: translateY(110%); }
-  100% { transform: translateY(220%); }
-}
-
-@keyframes scroll-line-horizontal {
-  0% { transform: translateX(-110%); }
-  55% { transform: translateX(110%); }
-  100% { transform: translateX(220%); }
-}
-
-@keyframes portrait-breathe {
-  0%, 100% { transform: scale(1.01); filter: grayscale(1) contrast(1.05); }
-  50% { transform: scale(1.035); filter: grayscale(.82) contrast(1.08); }
-}
-
-@keyframes screen-drift {
-  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--screen-rotate, 0deg)); }
-  50% { transform: translate3d(0, -12px, 0) rotate(var(--screen-rotate, 0deg)); }
-}
-
-@utility scroll-line {
-  animation: scroll-line 2.2s cubic-bezier(.65,0,.35,1) infinite;
-}
-
-@utility scroll-line-horizontal {
-  animation: scroll-line-horizontal 2.2s cubic-bezier(.65,0,.35,1) infinite;
-}
-
-@utility portrait-breathe {
-  animation: portrait-breathe 10s ease-in-out infinite;
-}
-
-@utility screen-drift {
-  animation: screen-drift 7s ease-in-out infinite;
-}
-
-@utility cinematic-mask {
-  mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 74%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 74%, transparent 100%);
-}
-
-@utility copper-line {
-  background: linear-gradient(90deg, transparent, var(--primary), transparent);
-}
-
-/* Grain texture overlay */
-@utility grain {
+/* A real store screenshot shown as a card. Many store images already carry their own
+   device frame and caption, so no extra bezel is drawn. The aspect ratio comes from the image. */
+@utility phone {
   position: relative;
-  &::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 50;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  overflow: hidden;
+  background: var(--card);
+  border-radius: 1.6rem;
+  box-shadow:
+    0 0 0 1px var(--border),
+    var(--phone-shadow);
+  & img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 }
 
-/* Scroll reveal */
-@utility reveal {
-  opacity: 0;
-  transform: translateY(28px);
+@utility phone-sm {
+  border-radius: 0.9rem;
+}
+
+/* iOS style squircle-ish app icon */
+@utility app-icon {
+  border-radius: 22.5%;
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 8px 18px -10px rgb(21 23 27 / 0.45);
+}
+
+@utility link-underline {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+  transition: text-decoration-color 200ms ease;
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+@utility btn {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding-inline: 1.4rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
   transition:
-    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  &.is-visible {
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@utility btn-solid {
+  background: var(--foreground);
+  color: var(--background);
+  &:hover {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+}
+
+@utility btn-ghost {
+  border: 1px solid var(--input);
+  color: var(--foreground);
+  &:hover {
+    border-color: var(--foreground);
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Hero: the screen inside the phone cross-fades when another app is chosen */
+@keyframes screen-in {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@utility screen-in {
+  animation: screen-in 450ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Single page-load sequence for the hero */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@utility reveal-title {
-  transform: translateY(46px);
-  clip-path: inset(0 0 22% 0);
-  &.is-visible { transform: translateY(0); clip-path: inset(0); }
+@utility rise {
+  animation: rise 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@utility reveal-media {
-  transform: translateY(56px) scale(0.985);
-  clip-path: inset(8% 0 8% 0);
-  &.is-visible { transform: translateY(0) scale(1); clip-path: inset(0); }
-}
-
-@utility reveal-label {
-  transform: translateY(12px);
-}
-
-@utility editorial-button {
-  display: inline-flex;
-  min-height: 3.25rem;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding-inline: 1.75rem;
-  font-size: 0.625rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  transition: transform 300ms ease, background-color 300ms ease, color 300ms ease, border-color 300ms ease;
-  &:hover { transform: translateY(-2px); }
-}
-
-@utility section-label {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--primary);
-  font-size: 0.625rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  & span { display: inline-block; width: 2rem; height: 1px; background: var(--primary); }
-}
-
-@utility project-stage {
-  isolation: isolate;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: radial-gradient(circle at 50% 55%, color-mix(in oklab, var(--primary) 13%, transparent), transparent 58%);
+/* Progress bar under the selected app while the hero auto-advances */
+@keyframes dock-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 
-@utility theme-inverse {
-  background: var(--foreground);
-  color: var(--background);
+@utility dock-progress {
+  transform-origin: left;
+  animation: dock-progress var(--dock-duration, 4500ms) linear both;
 }
 
-@utility portrait-frame {
-  box-shadow: 0 40px 100px -45px color-mix(in oklab, var(--foreground) 70%, transparent);
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 1px solid color-mix(in oklab, var(--foreground) 18%, transparent);
-    pointer-events: none;
-  }
-}
-
-@utility device-frame {
-  border: 6px solid var(--foreground);
-  border-radius: 1.5rem;
-  box-shadow: 0 30px 75px -30px color-mix(in oklab, var(--foreground) 65%, transparent);
-}
-
-@utility experience-line {
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 2.45rem;
-    width: 1px;
-    background: var(--border);
-  }
-}
-
-@utility project-screen {
-  transition: transform 900ms cubic-bezier(.22,1,.36,1), filter 900ms ease, opacity 900ms ease;
-  filter: grayscale(.35) saturate(.8);
-  .group:hover & { transform: translateY(-1rem) rotate(0deg); filter: grayscale(0) saturate(1); opacity: 1; }
-}
-
-@utility gallery-rail {
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary) var(--card);
-}
-
-@utility reveal-delay-1 {
-  transition-delay: 0.1s;
-}
-@utility reveal-delay-2 {
-  transition-delay: 0.2s;
-}
-@utility reveal-delay-3 {
-  transition-delay: 0.3s;
-}
-@utility reveal-delay-4 {
-  transition-delay: 0.4s;
-}
-
-/* Hero glow */
-@keyframes glow-drift {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(4%, -3%) scale(1.06);
-  }
-}
-
-@utility hero-glow {
-  animation: glow-drift 14s ease-in-out infinite;
-}
-
-/* Slow pulse for accent dot */
 @keyframes soft-pulse {
   0%,
   100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.4;
+    opacity: 0.35;
   }
 }
 
@@ -318,44 +282,14 @@
   animation: soft-pulse 2.4s ease-in-out infinite;
 }
 
-/* Marquee for tech strip */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@utility marquee-track {
-  animation: marquee 40s linear infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .hero-glow,
-  .marquee-track,
+  .screen-in,
+  .rise,
   .soft-pulse,
-  .scroll-line,
-  .scroll-line-horizontal,
-  .portrait-breathe,
-  .screen-drift {
+  .dock-progress {
     animation: none;
-  }
-  .reveal-title,
-  .reveal-media,
-  .reveal-label,
-  .project-screen {
-    clip-path: none;
-    transform: none;
-    transition: none;
   }
 }
