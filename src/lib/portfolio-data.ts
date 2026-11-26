@@ -4,7 +4,7 @@ export const profile = {
   location: "Noida, Delhi NCR, India",
   email: "vishalpandey8130@gmail.com",
   phone: "+91-8448613996",
-  linkedin: "https://linkedin.com/in/vishal-pandey",
+  linkedin: "https://www.linkedin.com/in/vishal-pandey-79b682124/",
   github: "https://github.com/Maxxtony8130",
   positioning:
     "Senior React Native Developer building high-performance mobile products for iOS and Android.",
