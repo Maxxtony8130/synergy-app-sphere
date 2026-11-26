@@ -268,6 +268,23 @@
   animation: dock-progress var(--dock-duration, 4500ms) linear both;
 }
 
+/* Endless screen rail; the track holds two copies, so -50% loops seamlessly */
+@keyframes rail {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility rail-track {
+  animation: rail 90s linear infinite;
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
 @keyframes soft-pulse {
   0%,
   100% {
@@ -287,6 +304,7 @@
     scroll-behavior: auto;
   }
   .screen-in,
+  .rail-track,
   .rise,
   .soft-pulse,
   .dock-progress {

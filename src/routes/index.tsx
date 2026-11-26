@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
+import { MotionConfig } from "motion/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, Check, Copy, Github, Linkedin, Mail } from "lucide-react";
 import { Nav } from "@/components/portfolio/Nav";
 import {
   AppIcon,
   CountUp,
-  Phone,
   Section,
   StoreBadge,
   usePrefersReducedMotion,
 } from "@/components/portfolio/shared";
 import { experience, profile, projects, services, stats, techGroups } from "@/lib/portfolio-data";
-import { previewScreens, projectAssets } from "@/lib/project-assets";
+import { ParallaxShots, PhoneStack, ScreenRail } from "@/components/portfolio/motion";
 import { cn } from "@/lib/utils";
 
 const TITLE = "Vishal Pandey, Senior React Native Developer";
@@ -42,7 +42,14 @@ export const Route = createFileRoute("/")({
           email: `mailto:${profile.email}`,
           address: { "@type": "PostalAddress", addressLocality: "Noida", addressCountry: "IN" },
           sameAs: [profile.linkedin, profile.github],
-          knowsAbout: ["React Native", "Expo", "TypeScript", "iOS", "Android", "Mobile App Development"],
+          knowsAbout: [
+            "React Native",
+            "Expo",
+            "TypeScript",
+            "iOS",
+            "Android",
+            "Mobile App Development",
+          ],
         }),
       },
     ],
@@ -57,8 +64,6 @@ function Hero() {
   const [active, setActive] = useState(0);
   const [auto, setAuto] = useState(true);
   const project = projects[active]!;
-  const visual = projectAssets[project.slug];
-
   useEffect(() => {
     if (!auto || reduced) return;
     const t = window.setTimeout(() => setActive((i) => (i + 1) % projects.length), DOCK_MS);
@@ -74,10 +79,22 @@ function Hero() {
     <section className="relative overflow-hidden px-5 pt-28 pb-16 md:px-10 md:pt-36 md:pb-24">
       <div className="mx-auto grid max-w-[84rem] items-center gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
         <div>
-          <p className="rise flex items-center gap-3 text-[0.95rem] text-muted-foreground">
-            <span className="soft-pulse h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
-            Senior React Native developer in Noida, available for projects
-          </p>
+          <div className="rise flex items-center gap-4">
+            <img
+              src="/assets/profile/vishal-pandey.webp"
+              alt="Vishal Pandey"
+              width={928}
+              height={1152}
+              className="h-14 w-14 rounded-full object-cover object-top ring-2 ring-background shadow-lg"
+            />
+            <div className="text-[0.95rem] leading-snug">
+              <p className="font-medium text-foreground">Vishal Pandey</p>
+              <p className="flex items-center gap-2 text-muted-foreground">
+                <span className="soft-pulse h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
+                React Native developer in Noida, available for projects
+              </p>
+            </div>
+          </div>
           <h1
             className="rise mt-7 text-[clamp(3.1rem,8.4vw,7.6rem)] font-bold leading-[0.92]"
             style={{ animationDelay: "80ms" }}
@@ -90,7 +107,10 @@ function Hero() {
           >
             {profile.summary}
           </p>
-          <div className="rise mt-10 flex flex-wrap items-center gap-3" style={{ animationDelay: "240ms" }}>
+          <div
+            className="rise mt-10 flex flex-wrap items-center gap-3"
+            style={{ animationDelay: "240ms" }}
+          >
             <a href="#work" className="btn btn-solid">
               See the apps
             </a>
@@ -98,10 +118,22 @@ function Hero() {
               Email me
             </a>
             <div className="ml-2 flex items-center gap-1 text-muted-foreground">
-              <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="flex h-10 w-10 items-center justify-center rounded-full hover:text-foreground">
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+                className="flex h-10 w-10 items-center justify-center rounded-full hover:text-foreground"
+              >
                 <Linkedin size={18} />
               </a>
-              <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="flex h-10 w-10 items-center justify-center rounded-full hover:text-foreground">
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub"
+                className="flex h-10 w-10 items-center justify-center rounded-full hover:text-foreground"
+              >
                 <Github size={18} />
               </a>
             </div>
@@ -110,23 +142,11 @@ function Hero() {
 
         {/* The live phone: the one memorable element on the page */}
         <div className="rise flex flex-col items-center" style={{ animationDelay: "200ms" }}>
-          <div className="relative w-[min(17.5rem,68vw)]">
-            <div
-              aria-hidden
-              className="absolute -inset-x-16 top-10 -z-10 h-[70%] rounded-full bg-primary/15 blur-3xl"
-            />
-            {visual && (
-              <Phone
-                key={project.slug}
-                slug={project.slug}
-                src={visual.cover}
-                alt={`${project.name} app screenshot`}
-                eager
-                imgClassName="screen-in"
-              />
-            )}
-          </div>
-          <div className="mt-7 flex min-h-[3.5rem] w-full max-w-sm items-center gap-4" aria-live="polite">
+          <PhoneStack slug={project.slug} name={project.name} />
+          <div
+            className="mt-2 flex min-h-[3.5rem] w-full max-w-sm items-center gap-4"
+            aria-live="polite"
+          >
             <AppIcon slug={project.slug} name={project.name} className="h-12 w-12 shrink-0" />
             <div className="min-w-0 flex-1">
               <p className="truncate font-display text-xl font-semibold">{project.name}</p>
@@ -162,7 +182,9 @@ function Hero() {
               title={p.name}
               className={cn(
                 "relative shrink-0 rounded-[24%] transition-transform duration-200 hover:-translate-y-1",
-                i === active ? "ring-2 ring-primary ring-offset-2 ring-offset-card" : "opacity-80 hover:opacity-100",
+                i === active
+                  ? "ring-2 ring-primary ring-offset-2 ring-offset-card"
+                  : "opacity-80 hover:opacity-100",
               )}
             >
               <AppIcon slug={p.slug} name={p.name} className="h-12 w-12 md:h-14 md:w-14" />
@@ -205,16 +227,32 @@ function Numbers() {
 
 function Principles() {
   const items = [
-    ["End-to-end ownership", "Multiple apps shipped as sole developer or technical lead, from first commit to store release."],
-    ["Built for real conditions", "Offline-first storage, background uploads, retry logic and low-connectivity handling."],
+    [
+      "End-to-end ownership",
+      "Multiple apps shipped as sole developer or technical lead, from first commit to store release.",
+    ],
+    [
+      "Built for real conditions",
+      "Offline-first storage, background uploads, retry logic and low-connectivity handling.",
+    ],
     ["Performance at scale", "State, sync and rendering tuned to support 5,000+ concurrent users."],
   ];
   return (
     <section className="mx-auto max-w-[84rem] px-5 pt-24 md:px-10 md:pt-36">
-      <p className="max-w-[24ch] font-display text-[clamp(1.9rem,4vw,3.4rem)] font-medium leading-[1.08] tracking-tight">
-        I take product ideas to production: architecture, offline and real-time data, payments, sign-in, and the
-        release to both stores.
-      </p>
+      <div className="grid items-end gap-10 md:grid-cols-[minmax(0,15rem)_1fr] md:gap-14">
+        <img
+          src="/assets/profile/vishal-pandey.webp"
+          alt="Portrait of Vishal Pandey"
+          width={928}
+          height={1152}
+          loading="lazy"
+          className="w-40 rounded-3xl object-cover grayscale transition duration-500 hover:grayscale-0 md:w-full"
+        />
+        <p className="max-w-[24ch] font-display text-[clamp(1.9rem,4vw,3.4rem)] font-medium leading-[1.08] tracking-tight">
+          I take product ideas to production: architecture, offline and real-time data, payments,
+          sign-in, and the release to both stores.
+        </p>
+      </div>
       <div className="mt-14 grid gap-10 md:grid-cols-3">
         {items.map(([title, copy]) => (
           <div key={title} className="border-t border-foreground pt-5">
@@ -236,15 +274,20 @@ function Work() {
     >
       <ul className="border-t border-border">
         {projects.map((project) => {
-          const shots = previewScreens(project.slug, 3);
           return (
             <li key={project.slug} className="group border-b border-border py-12 md:py-16">
-              <article className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+              <article className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
                 <div className="flex flex-col">
                   <div className="flex items-center gap-5">
-                    <AppIcon slug={project.slug} name={project.name} className="h-16 w-16 md:h-20 md:w-20" />
+                    <AppIcon
+                      slug={project.slug}
+                      name={project.name}
+                      className="h-16 w-16 md:h-20 md:w-20"
+                    />
                     <div>
-                      <h3 className="text-[clamp(2rem,4vw,3.25rem)] font-semibold">{project.name}</h3>
+                      <h3 className="text-[clamp(2rem,4vw,3.25rem)] font-semibold">
+                        {project.name}
+                      </h3>
                       <p className="mt-1 text-muted-foreground">{project.tagline}</p>
                     </div>
                   </div>
@@ -267,14 +310,21 @@ function Work() {
 
                   <ul className="mt-7 flex flex-wrap gap-2" aria-label="Technology">
                     {project.stack.map((t) => (
-                      <li key={t} className="rounded-full border border-input px-3 py-1 text-sm text-muted-foreground">
+                      <li
+                        key={t}
+                        className="rounded-full border border-input px-3 py-1 text-sm text-muted-foreground"
+                      >
                         {t}
                       </li>
                     ))}
                   </ul>
 
-                  <div className="mt-8 flex flex-wrap gap-3 lg:mt-auto lg:pt-10">
-                    <Link to="/work/$slug" params={{ slug: project.slug }} className="btn btn-solid min-h-10 px-5 text-sm">
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Link
+                      to="/work/$slug"
+                      params={{ slug: project.slug }}
+                      className="btn btn-solid min-h-10 px-5 text-sm"
+                    >
                       Read the case study
                     </Link>
                     {project.links.map((l) => (
@@ -288,22 +338,9 @@ function Work() {
                   params={{ slug: project.slug }}
                   aria-label={`${project.name} case study`}
                   tabIndex={-1}
-                  className="no-scrollbar -mx-5 flex items-start gap-4 overflow-x-auto rounded-3xl bg-secondary px-5 py-8 md:mx-0 md:gap-6 md:px-10 md:py-12"
+                  className="block -mx-5 md:mx-0"
                 >
-                  {shots.map((src, i) => (
-                    <Phone
-                      key={src}
-                      slug={project.slug}
-                      src={src}
-                      alt={`${project.name} screenshot ${i + 1}`}
-                      small
-                      className={cn(
-                        "w-[42%] shrink-0 transition-transform duration-500 ease-out sm:w-[30%]",
-                        i === 1 && "md:translate-y-8 md:group-hover:translate-y-4",
-                        i !== 1 && "md:group-hover:-translate-y-2",
-                      )}
-                    />
-                  ))}
+                  <ParallaxShots slug={project.slug} name={project.name} />
                 </Link>
               </article>
             </li>
@@ -317,11 +354,18 @@ function Work() {
 function Experience() {
   return (
     <div className="bg-card">
-      <Section id="experience" title="Where I've worked" intro="Four teams, from web front ends to owning mobile architecture end to end.">
+      <Section
+        id="experience"
+        title="Where I've worked"
+        intro="Four teams, from web front ends to owning mobile architecture end to end."
+      >
         <ol className="relative border-l border-border md:ml-[11rem]">
           {experience.map((item) => (
             <li key={item.company} className="relative pb-14 pl-8 last:pb-0 md:pl-12">
-              <span aria-hidden className="absolute -left-[5px] top-2 h-[9px] w-[9px] rounded-full bg-primary" />
+              <span
+                aria-hidden
+                className="absolute -left-[5px] top-2 h-[9px] w-[9px] rounded-full bg-primary"
+              />
               <p className="text-sm text-muted-foreground md:absolute md:-left-[11rem] md:top-1 md:w-[9.5rem] md:text-right">
                 {item.period}
               </p>
@@ -348,7 +392,10 @@ function Stack() {
     <Section id="stack" title="What I work with">
       <dl className="grid gap-x-16 md:grid-cols-2">
         {techGroups.map((group) => (
-          <div key={group.name} className="grid grid-cols-1 gap-2 border-t border-border py-6 sm:grid-cols-[11rem_1fr]">
+          <div
+            key={group.name}
+            className="grid grid-cols-1 gap-2 border-t border-border py-6 sm:grid-cols-[11rem_1fr]"
+          >
             <dt className="font-semibold">{group.name}</dt>
             <dd className="text-muted-foreground">{group.items.join(", ")}</dd>
           </div>
@@ -361,7 +408,11 @@ function Stack() {
 function Services() {
   return (
     <div className="bg-card">
-      <Section id="services" title="How I can help" intro="Hire me to start a new app, take over a live one, or fix what is slowing it down.">
+      <Section
+        id="services"
+        title="How I can help"
+        intro="Hire me to start a new app, take over a live one, or fix what is slowing it down."
+      >
         <div className="grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service) => (
             <div key={service.title} className="bg-background p-7 md:p-8">
@@ -420,13 +471,26 @@ function Contact() {
             {profile.name}, {profile.location}. {new Date().getFullYear()}.
           </p>
           <div className="flex gap-6">
-            <a href={profile.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-background">
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 hover:text-background"
+            >
               <Linkedin size={16} /> LinkedIn
             </a>
-            <a href={profile.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-background">
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 hover:text-background"
+            >
               <Github size={16} /> GitHub
             </a>
-            <a href={`mailto:${profile.email}`} className="flex items-center gap-2 hover:text-background">
+            <a
+              href={`mailto:${profile.email}`}
+              className="flex items-center gap-2 hover:text-background"
+            >
               <Mail size={16} /> Email
             </a>
           </div>
@@ -438,18 +502,21 @@ function Contact() {
 
 function Index() {
   return (
-    <div className="min-h-screen">
-      <Nav />
-      <main>
-        <Hero />
-        <Numbers />
-        <Principles />
-        <Work />
-        <Experience />
-        <Stack />
-        <Services />
-        <Contact />
-      </main>
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen">
+        <Nav />
+        <main>
+          <Hero />
+          <Numbers />
+          <ScreenRail />
+          <Principles />
+          <Work />
+          <Experience />
+          <Stack />
+          <Services />
+          <Contact />
+        </main>
+      </div>
+    </MotionConfig>
   );
 }
